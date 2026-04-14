@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Operacional · Digital Pressure</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#060608;--bg2:#0a0a0f;--bg3:#0f0f18;--bg4:#14141f;
+  --cyan:#00BFDF;--cf:rgba(0,191,223,.08);--cb:rgba(0,191,223,.2);
+  --w:#F2F2F2;--g1:#999;--g2:#555;--g3:#252530;--brd:rgba(255,255,255,.07);
+  --red:#E84545;--amb:#E8A020;--grn:#20C98A;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--w);font-family:'DM Sans',sans-serif;min-height:100%;}
+.view{display:none;}.view.on{display:block;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,191,223,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,191,223,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+
+/* ── FORM ── */
+.wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:56px 20px 80px;position:relative;z-index:1;}
+.topbar{width:100%;max-width:660px;display:flex;justify-content:space-between;align-items:center;margin-bottom:44px;}
+.dp-name{display:flex;flex-direction:column;line-height:1.15;cursor:pointer;}
+.dp-top{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--w);text-transform:uppercase;}
+.dp-bot{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;}
+.topbar-tag{font-size:9px;font-weight:600;letter-spacing:.14em;color:var(--g2);text-transform:uppercase;}
+.card{width:100%;max-width:660px;background:rgba(10,10,15,.95);border:.5px solid var(--brd);border-radius:14px;overflow:hidden;backdrop-filter:blur(20px);}
+.pbar-wrap{height:2px;background:var(--bg3);}
+.pbar{height:100%;background:linear-gradient(90deg,var(--cyan),rgba(0,191,223,.5));width:0%;transition:width .4s ease;}
+.step{display:none;padding:42px 40px 38px;}
+.step.on{display:block;}
+.step-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;}
+.step-lbl{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:8px;}
+.step-lbl::before{content:'';width:16px;height:1.5px;background:var(--cyan);display:block;flex-shrink:0;}
+.step-ct{font-size:10px;font-weight:600;color:var(--g2);letter-spacing:.08em;}
+.step-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,4vw,30px);line-height:1.05;color:var(--w);margin-bottom:8px;}
+.step-q em{font-style:normal;color:var(--cyan);}
+.step-sub{font-size:13px;color:var(--g1);line-height:1.65;margin-bottom:26px;}
+.step-sub b{color:rgba(242,242,242,.8);font-weight:600;}
+.opts{display:flex;flex-direction:column;gap:9px;margin-bottom:30px;}
+.opt{display:flex;align-items:flex-start;gap:13px;background:rgba(15,15,24,.8);border:.5px solid var(--g3);border-radius:8px;padding:15px 17px;cursor:pointer;transition:border-color .15s,background .15s;user-select:none;}
+.opt:hover{border-color:rgba(0,191,223,.4);background:rgba(20,20,31,.9);}
+.opt.sel{border-color:var(--cyan);background:var(--cf);}
+.radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--g2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;}
+.opt.sel .radio{border-color:var(--cyan);background:var(--cyan);}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--bg);opacity:0;transition:opacity .15s;}
+.opt.sel .dot{opacity:1;}
+.opt-lbl{font-size:14px;font-weight:500;color:var(--w);line-height:1.35;margin-bottom:2px;}
+.opt-desc{font-size:12px;color:var(--g1);line-height:1.5;}
+.flds{display:flex;flex-direction:column;gap:13px;margin-bottom:30px;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.fld{display:flex;flex-direction:column;gap:6px;}
+.fld label{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--g2);}
+.fld input,.fld select{background:rgba(15,15,24,.9);border:.5px solid var(--g3);border-radius:6px;padding:13px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--w);outline:none;transition:border-color .2s;width:100%;}
+.fld input:focus,.fld select:focus{border-color:var(--cyan);}
+.fld input::placeholder{color:var(--g2);}
+.fld select{appearance:none;cursor:pointer;}
+.fld select option{background:#0a0a0f;}
+.nav{display:flex;justify-content:space-between;align-items:center;}
+.btn-back{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--g2);background:none;border:none;cursor:pointer;padding:11px 0;transition:color .2s;}
+.btn-back:hover{color:var(--w);}
+.btn-next{background:var(--cyan);color:var(--bg);border:none;border-radius:5px;padding:13px 34px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:opacity .2s,transform .15s;}
+.btn-next:hover{opacity:.87;}
+.btn-next:active{transform:scale(.98);}
+.btn-next:disabled{opacity:.3;cursor:not-allowed;}
+
+/* ── RESULTADO ── */
+#vRes{background:var(--bg);}
+#vRes .wrap{padding-top:36px;}
+.res-card{width:100%;max-width:660px;border-radius:14px;overflow:hidden;border:.5px solid var(--brd);}
+.res-hero{position:relative;padding:60px 40px 48px;text-align:center;overflow:hidden;background:var(--bg2);}
+.res-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,191,223,.12) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 100%,rgba(0,191,223,.06) 0%,transparent 60%);pointer-events:none;}
+.res-hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,191,223,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,191,223,.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;}
+.res-hero-inner{position:relative;z-index:1;}
+.orb{width:120px;height:120px;border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;position:relative;}
+.orb::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(0,191,223,.3);animation:pulse 3s ease-in-out infinite;}
+.orb::after{content:'';position:absolute;inset:-20px;border-radius:50%;border:1px solid rgba(0,191,223,.1);animation:pulse 3s ease-in-out infinite .5s;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.05);}}
+.orb-inner{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.02em;}
+.orb-c{background:radial-gradient(circle,rgba(232,69,69,.25),rgba(232,69,69,.08));border:1px solid rgba(232,69,69,.4);color:var(--red);}
+.orb-a{background:radial-gradient(circle,rgba(232,160,32,.25),rgba(232,160,32,.08));border:1px solid rgba(232,160,32,.4);color:var(--amb);}
+.orb-e{background:radial-gradient(circle,rgba(0,191,223,.25),rgba(0,191,223,.08));border:1px solid rgba(0,191,223,.4);color:var(--cyan);}
+.res-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;}
+.res-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,5vw,38px);line-height:1;margin-bottom:10px;}
+.res-sub{font-size:14px;color:var(--g1);line-height:1.72;max-width:440px;margin:0 auto;}
+.res-sub b{font-weight:600;}
+.lv-c .res-badge{background:rgba(232,69,69,.12);color:var(--red);border:.5px solid rgba(232,69,69,.3);}
+.lv-c .res-title{color:var(--red);}
+.lv-a .res-badge{background:rgba(232,160,32,.12);color:var(--amb);border:.5px solid rgba(232,160,32,.3);}
+.lv-a .res-title{color:var(--amb);}
+.lv-e .res-badge{background:var(--cf);color:var(--cyan);border:.5px solid var(--cb);}
+.lv-e .res-title{color:var(--cyan);}
+.radar-section{background:var(--bg3);padding:28px 40px;}
+.radar-title{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--g2);margin-bottom:16px;}
+.radar{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ri{background:rgba(10,10,15,.8);border:.5px solid var(--brd);border-radius:8px;padding:13px 15px;}
+.ri-lbl{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--g2);margin-bottom:7px;}
+.ri-bw{height:3px;background:var(--g3);border-radius:2px;overflow:hidden;margin-bottom:5px;}
+.ri-bf{height:100%;border-radius:2px;}
+.ri-v{font-size:11px;font-weight:600;}
+.res-cta{position:relative;overflow:hidden;padding:44px 40px 40px;background:var(--bg2);}
+.res-cta::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,191,223,.08),transparent 70%);pointer-events:none;}
+.cta-inner{position:relative;z-index:1;text-align:center;}
+.cta-line{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.cta-line-bar{flex:1;height:.5px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.cta-line-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);flex-shrink:0;}
+.cta-label{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,5vw,42px);color:var(--w);line-height:1;margin-bottom:6px;letter-spacing:.01em;}
+.cta-title em{font-style:normal;color:var(--cyan);}
+.cta-sub{font-size:13px;color:var(--g1);line-height:1.72;max-width:420px;margin:0 auto 28px;}
+.cta-sub b{color:var(--w);font-weight:600;}
+.btn-wpp{display:inline-flex;align-items:center;gap:10px;background:var(--cyan);color:var(--bg);border:none;border-radius:6px;padding:16px 36px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.btn-wpp:hover{opacity:.9;transform:translateY(-1px);}
+.res-ig{margin-top:14px;font-size:11px;}
+.res-ig a{color:var(--cyan);text-decoration:none;letter-spacing:.05em;opacity:.7;}
+.res-ig a:hover{opacity:1;}
+.scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scan 4s ease-in-out infinite;opacity:.4;}
+@keyframes scan{0%{top:0;opacity:0;}10%{opacity:.4;}90%{opacity:.4;}100%{top:100%;opacity:0;}}
+
+/* ── SAVING ── */
+.saving-overlay{display:none;position:fixed;inset:0;background:rgba(6,6,8,.85);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.saving-overlay.on{display:flex;}
+.saving-dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);animation:savepulse 1s infinite;}
+@keyframes savepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(1.5);}}
+.saving-txt{font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--g1);}
+
+@media(max-width:580px){
+.step,.res-hero,.radar-section,.res-cta{padding-left:20px;padding-right:20px;}
+.fg{grid-template-columns:1fr;}
+.radar{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Saving overlay -->
+<div class="saving-overlay" id="savingOverlay">
+  <div class="saving-dot"></div>
+  <div class="saving-txt">Salvando diagnóstico...</div>
+</div>
+
+<!-- ═══════════════ FORMULÁRIO ═══════════════ -->
+<div id="vForm" class="view on">
+<div class="wrap">
+  <div class="topbar">
+    <div class="dp-name"><span class="dp-top">Digital</span><span class="dp-bot">Pressure</span></div>
+    <span class="topbar-tag">Diagnóstico · Clínicas</span>
+  </div>
+  <div class="card">
+    <div class="pbar-wrap"><div class="pbar" id="pbar"></div></div>
+
+    <div class="step on" id="s0">
+      <div class="step-meta"><span class="step-lbl">Diagnóstico gratuito</span></div>
+      <h2 class="step-q">Descubra em <em>3 minutos</em> o que está travando sua clínica.</h2>
+      <p class="step-sub">8 perguntas de múltipla escolha. Ao final você recebe o <b>diagnóstico operacional real</b> da sua clínica.</p>
+      <div class="flds">
+        <div class="fg">
+          <div class="fld"><label>Seu nome</label><input id="f-nome" type="text" placeholder="Dr(a). Seu nome"></div>
+          <div class="fld"><label>WhatsApp *</label><input id="f-wpp" type="tel" placeholder="(11) 99999-9999"></div>
+        </div>
+        <div class="fg">
+          <div class="fld"><label>Tipo de clínica</label>
+            <select id="f-tipo"><option value="">Selecione</option><option>Odontológica</option><option>Médica / clínica geral</option><option>Estética / harmonização</option><option>Dermatologia</option><option>Fisioterapia / reabilitação</option><option>Multi-especialidade</option><option>Outro</option></select>
+          </div>
+          <div class="fld"><label>Faturamento mensal *</label>
+            <select id="f-fat"><option value="">Selecione</option><option value="1">Até R$30k/mês</option><option value="2">R$30k – R$70k/mês</option><option value="3">R$70k – R$150k/mês</option><option value="4">R$150k – R$300k/mês</option><option value="5">Acima de R$300k/mês</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="nav"><span></span><button class="btn-next" onclick="goNext(0)">Começar diagnóstico →</button></div>
+    </div>
+
+    <div class="step" id="s1">
+      <div class="step-meta"><span class="step-lbl">Processo</span><span class="step-ct">1 de 7</span></div>
+      <h2 class="step-q">Sua clínica tem um <em>processo de atendimento</em> documentado?</h2>
+      <p class="step-sub">Da chegada do paciente até o fechamento do orçamento — existe um fluxo padrão?</p>
+      <div class="opts" data-q="processo">
+        <div class="opt" data-v="0" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Não. Cada pessoa faz do seu jeito.</div><div class="opt-desc">Não existe padrão. O atendimento varia conforme quem está na recepção.</div></div></div>
+        <div class="opt" data-v="1" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Está na minha cabeça, mas não está escrito.</div><div class="opt-desc">Nunca formalizei. Depende de mim para funcionar.</div></div></div>
+        <div class="opt" data-v="2" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Temos processo básico, mas não é seguido sempre.</div><div class="opt-desc">Existe algo definido, mas o time improvisa e eu preciso corrigir.</div></div></div>
+        <div class="opt" data-v="3" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Processo documentado e o time segue sem eu intervir.</div><div class="opt-desc">O fluxo está definido, registrado e funciona de forma autônoma.</div></div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="goBack(1)">← Voltar</button><button class="btn-next" id="b1" onclick="goNext(1)" disabled>Próxima →</button></div>
+    </div>
+
+    <div class="step" id="s2">
+      <div class="step-meta"><span class="step-lbl">Indicadores</span><span class="step-ct">2 de 7</span></div>
+      <h2 class="step-q">Você sabe sua <em>taxa de conversão</em> de orçamento para procedimento?</h2>
+      <p class="step-sub">De cada 10 orçamentos apresentados, quantos você fecha com precisão?</p>
+      <div class="opts" data-q="conversao">
+        <div class="opt" data-v="0" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Não tenho esse dado. Nunca medi.</div><div class="opt-desc">Não existe acompanhamento de quantos orçamentos viram procedimentos.</div></div></div>
+        <div class="opt" data-v="1" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Tenho uma estimativa, mas não é confiável.</div><div class="opt-desc">Noção aproximada, não baseada em registro real.</div></div></div>
+        <div class="opt" data-v="3" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Tenho esse número e acompanho regularmente.</div><div class="opt-desc">Sei exatamente minha taxa de conversão e uso para tomar decisões.</div></div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="goBack(2)">← Voltar</button><button class="btn-next" id="b2" onclick="goNext(2)" disabled>Próxima →</button></div>
+    </div>
+
+    <div class="step" id="s3">
+      <div class="step-meta"><span class="step-lbl">Time</span><span class="step-ct">3 de 7</span></div>
+      <h2 class="step-q">O que acontece quando <em>você não está</em> na clínica?</h2>
+      <p class="step-sub">Pense num dia que você precisou se ausentar sem aviso.</p>
+      <div class="opts" data-q="ausencia">
+        <div class="opt" data-v="0" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">A clínica praticamente para. Tudo depende de mim.</div><div class="opt-desc">Decisões ficam represadas, atendimentos são cancelados ou mal conduzidos.</div></div></div>
+        <div class="opt" data-v="1" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Funciona no básico, mas me ligam para qualquer imprevisto.</div><div class="opt-desc">Qualquer coisa fora do rotineiro vem para mim.</div></div></div>
+        <div class="opt" data-v="2" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Funciona, mas a qualidade cai visivelmente.</div><div class="opt-desc">O time toca a operação, mas sem o padrão que eu gostaria.</div></div></div>
+        <div class="opt" data-v="3" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Funciona normalmente. O time tem autonomia.</div><div class="opt-desc">A operação não depende da minha presença para manter o padrão.</div></div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="goBack(3)">← Voltar</button><button class="btn-next" id="b3" onclick="goNext(3)" disabled>Próxima →</button></div>
+    </div>
+
+    <div class="step" id="s4">
+      <div class="step-meta"><span class="step-lbl">Recorrência</span><span class="step-ct">4 de 7</span></div>
+      <h2 class="step-q">Como sua clínica <em>reativa pacientes</em> que sumiram?</h2>
+      <p class="step-sub">Um paciente fez um procedimento há 6 meses e não voltou. O que acontece?</p>
+      <div class="opts" data-q="reativacao">
+        <div class="opt" data-v="0" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Nada. Esperamos o paciente voltar por conta própria.</div><div class="opt-desc">Não existe ação proativa de reativação.</div></div></div>
+        <div class="opt" data-v="1" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Às vezes alguém manda mensagem, sem processo definido.</div><div class="opt-desc">Depende da iniciativa individual, sem padrão definido.</div></div></div>
+        <div class="opt" data-v="3" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Temos fluxo de reativação com prazo, mensagem e responsável.</div><div class="opt-desc">Existe processo claro para identificar e reativar pacientes inativos.</div></div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="goBack(4)">← Voltar</button><button class="btn-next" id="b4" onclick="goNext(4)" disabled>Próxima →</button></div>
+    </div>
+
+    <div class="step" id="s5">
+      <div class="step-meta"><span class="step-lbl">Financeiro</span><span class="step-ct">5 de 7</span></div>
+      <h2 class="step-q">Você sabe qual é o <em>lucro real</em> da sua clínica este mês?</h2>
+      <p class="step-sub">Não o faturamento. O que sobra depois de todos os custos, pró-labore e impostos.</p>
+      <div class="opts" data-q="financeiro">
+        <div class="opt" data-v="0" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Não sei. Sei quanto entra, mas não quanto sobra de verdade.</div><div class="opt-desc">O controle financeiro não está estruturado para separar faturamento de lucro real.</div></div></div>
+        <div class="opt" data-v="1" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Tenho uma noção, mas os números não são confiáveis.</div><div class="opt-desc">Faço um controle básico, mas existem custos não mapeados.</div></div></div>
+        <div class="opt" data-v="3" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Sei com precisão. Tenho DRE mensal e acompanho todo mês.</div><div class="opt-desc">O resultado financeiro real está visível e usado para tomada de decisão.</div></div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="goBack(5)">← Voltar</button><button class="btn-next" id="b5" onclick="goNext(5)" disabled>Próxima →</button></div>
+    </div>
+
+    <div class="step" id="s6">
+      <div class="step-meta"><span class="step-lbl">Dependência</span><span class="step-ct">6 de 7</span></div>
+      <h2 class="step-q">Se você tirar <em>15 dias de férias</em> amanhã — o que acontece?</h2>
+      <p class="step-sub">Sem avisar com antecedência. Sem deixar instruções detalhadas.</p>
+      <div class="opts" data-q="ferias">
+        <div class="opt" data-v="0" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Impossível. A clínica fecha ou entra em colapso.</div><div class="opt-desc">Sem minha presença, não existe operação.</div></div></div>
+        <div class="opt" data-v="1" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Funciona, mas eu ficaria no celular o dia inteiro.</div><div class="opt-desc">A clínica não fecha, mas o WhatsApp não para.</div></div></div>
+        <div class="opt" data-v="2" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Funciona com alguma perda de qualidade. Consigo descansar.</div><div class="opt-desc">O time toca, mas sem o mesmo padrão. Resolvo só o urgente.</div></div></div>
+        <div class="opt" data-v="3" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Funciona normalmente. O time tem autonomia total.</div><div class="opt-desc">Posso me ausentar sem que qualidade ou resultado sejam afetados.</div></div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="goBack(6)">← Voltar</button><button class="btn-next" id="b6" onclick="goNext(6)" disabled>Próxima →</button></div>
+    </div>
+
+    <div class="step" id="s7">
+      <div class="step-meta"><span class="step-lbl">Objetivo</span><span class="step-ct">7 de 7</span></div>
+      <h2 class="step-q">O que você mais quer <em>resolver</em> nos próximos 90 dias?</h2>
+      <p class="step-sub">Escolha o resultado mais transformador para sua realidade agora.</p>
+      <div class="opts" data-q="objetivo">
+        <div class="opt" data-v="A" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Uma clínica que funcione sem depender da minha presença.</div><div class="opt-desc">Quero autonomia real de operação.</div></div></div>
+        <div class="opt" data-v="B" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Entender o lucro real e parar de trabalhar no escuro.</div><div class="opt-desc">Quero visibilidade financeira real — não só faturamento.</div></div></div>
+        <div class="opt" data-v="C" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Aumentar conversão e recorrência sem depender de tráfego pago.</div><div class="opt-desc">Quero que a base existente gere mais receita com processo.</div></div></div>
+        <div class="opt" data-v="D" onclick="pick(this)"><div class="radio"><div class="dot"></div></div><div><div class="opt-lbl">Montar um time que performa com ou sem minha presença.</div><div class="opt-desc">Quero equipe com função clara e resultado previsível.</div></div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="goBack(7)">← Voltar</button><button class="btn-next" id="b7" onclick="finish()" disabled>Ver meu diagnóstico →</button></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════ RESULTADO ═══════════════ -->
+<div id="vRes" class="view">
+<div class="wrap" style="padding-top:36px;">
+  <div class="topbar">
+    <div class="dp-name"><span class="dp-top">Digital</span><span class="dp-bot">Pressure</span></div>
+    <span class="topbar-tag">Seu diagnóstico</span>
+  </div>
+  <div class="res-card">
+    <div class="res-hero">
+      <div class="scan"></div>
+      <div class="res-hero-inner">
+        <div class="orb" id="res-orb"><div class="orb-inner" id="res-orb-inner"></div></div>
+        <div id="res-hd"></div>
+      </div>
+    </div>
+    <div class="radar-section">
+      <div class="radar-title">Radar operacional</div>
+      <div class="radar" id="res-radar"></div>
+    </div>
+    <div class="res-cta">
+      <div class="cta-inner">
+        <div class="cta-line"><div class="cta-line-bar"></div><div class="cta-line-dot"></div><div class="cta-line-bar"></div></div>
+        <div class="cta-label">Próximo passo</div>
+        <div class="cta-title">Se você se viu aqui —<br><em>isso tem solução.</em></div>
+        <div class="cta-sub" id="res-cta-p"></div>
+        <button class="btn-wpp" id="btn-wpp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Falar com o Victor
+        </button>
+        <div class="res-ig"><a href="https://instagram.com/digitalpressureoficial" target="_blank">@digitalpressureoficial</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ══ SUPABASE ══
+const { createClient } = supabase;
+const sb = createClient(
+  'https://chxlseszedcnmqqryusz.supabase.co',
+  'sb_publishable_E3bcyQOVd-6PMqCKJFOHOA_REujRmla'
+);
+
+var ANS = {};
+
+function show(id){
+  ['vForm','vRes'].forEach(function(v){ document.getElementById(v).classList.remove('on'); });
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function updBar(s){ document.getElementById('pbar').style.width = (s===0?0:Math.round(s/7*100))+'%'; }
+
+function pick(el){
+  var grp = el.closest('.opts');
+  grp.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('sel'); });
+  el.classList.add('sel');
+  ANS[grp.getAttribute('data-q')] = el.getAttribute('data-v');
+  var sn = parseInt(el.closest('.step').id.replace('s',''));
+  var bn = document.getElementById('b'+sn);
+  if(bn) bn.disabled = false;
+}
+
+function goNext(from){
+  if(from===0){
+    var w = document.getElementById('f-wpp').value.trim();
+    var f = document.getElementById('f-fat').value;
+    if(!w || !f){ alert('WhatsApp e faturamento são obrigatórios.'); return; }
+    ANS.nome = document.getElementById('f-nome').value.trim();
+    ANS.wpp  = w;
+    ANS.tipo = document.getElementById('f-tipo').value;
+    ANS.fat  = parseInt(f);
+  }
+  document.getElementById('s'+from).classList.remove('on');
+  document.getElementById('s'+(from+1)).classList.add('on');
+  updBar(from+1);
+  window.scrollTo(0,0);
+}
+
+function goBack(from){
+  document.getElementById('s'+from).classList.remove('on');
+  document.getElementById('s'+(from-1)).classList.add('on');
+  updBar(from-1);
+  window.scrollTo(0,0);
+}
+
+function score(){
+  return ['processo','conversao','ausencia','reativacao','financeiro','ferias']
+    .reduce(function(s,k){ return s+(parseInt(ANS[k])||0); }, 0);
+}
+function pct(k){ return Math.round((parseInt(ANS[k]||0)/3)*100); }
+
+async function finish(){
+  var sc = score();
+  var fatLbl = {1:'Até R$30k/mês',2:'R$30k–R$70k/mês',3:'R$70k–R$150k/mês',4:'R$150k–R$300k/mês',5:'Acima de R$300k/mês'};
+  var nm = ANS.nome ? ANS.nome.split(' ')[0] : 'você';
+  var lv,lvBadge,lvTitle,lvSub,orbCls,orbTxt;
+
+  if(sc<=5){
+    lv='lv-c'; lvBadge='Operação em risco'; orbCls='orb-c'; orbTxt='CR';
+    lvTitle='Sua clínica depende 100% de você.';
+    lvSub='<b>'+nm+'</b>, sua operação ainda não tem estrutura para funcionar sem sua presença. O problema tem solução — mas exige mudança estrutural, não cosmética.';
+  } else if(sc<=11){
+    lv='lv-a'; lvBadge='Estrutura parcial'; orbCls='orb-a'; orbTxt='AT';
+    lvTitle='Você tem base. Mas ainda é a variável principal.';
+    lvSub='<b>'+nm+'</b>, existem alguns processos funcionando, mas a operação ainda depende muito de você. Sem estrutura, escalar vai multiplicar o caos — não a receita.';
+  } else {
+    lv='lv-e'; lvBadge='Maturidade operacional'; orbCls='orb-e'; orbTxt='OK';
+    lvTitle='Você está no caminho. Falta afinar.';
+    lvSub='<b>'+nm+'</b>, sua clínica já tem mais estrutura do que a média. O trabalho agora é afinar, consolidar e escalar com consistência.';
+  }
+
+  // monta resultado na tela
+  document.getElementById('res-orb-inner').className = 'orb-inner '+orbCls;
+  document.getElementById('res-orb-inner').textContent = orbTxt;
+  document.getElementById('res-hd').innerHTML =
+    '<div class="'+lv+'"><div class="res-badge">'+lvBadge+'</div>'+
+    '<div class="res-title">'+lvTitle+'</div>'+
+    '<div class="res-sub">'+lvSub+'</div></div>';
+
+  var dims = [{k:'processo',l:'Processo'},{k:'conversao',l:'Conversão'},{k:'ausencia',l:'Autonomia'},{k:'reativacao',l:'Recorrência'},{k:'financeiro',l:'Financeiro'},{k:'ferias',l:'Independência'}];
+  document.getElementById('res-radar').innerHTML = dims.map(function(d){
+    var p=pct(d.k);
+    var bc=p>=67?'var(--grn)':p>=34?'var(--amb)':'var(--red)';
+    var vl=p>=67?'Estruturado':p>=34?'Parcial':'Crítico';
+    return '<div class="ri"><div class="ri-lbl">'+d.l+'</div>'+
+      '<div class="ri-bw"><div class="ri-bf" style="width:'+Math.max(p,6)+'%;background:'+bc+'"></div></div>'+
+      '<div class="ri-v" style="color:'+bc+'">'+vl+'</div></div>';
+  }).join('');
+
+  var objMap={
+    A:'Você quer autonomia operacional real. É exatamente isso que o <b>Programa Clínica Estruturada</b> entrega em 90 dias.',
+    B:'Você quer visibilidade financeira. Construímos o DRE da sua clínica e o processo que mantém esse número atualizado.',
+    C:'Você quer mais receita da base existente. Estruturamos reativação e conversão da sua clínica.',
+    D:'Você quer um time autônomo. Mapeamos funções, documentamos processos e treinamos o time para operar sem você no centro.'
+  };
+  document.getElementById('res-cta-p').innerHTML =
+    (objMap[ANS.objetivo]||'Podemos estruturar o que está travando sua clínica em 90 dias.')+
+    ' <b>Victor analisa seu perfil pessoalmente.</b>';
+
+  document.getElementById('btn-wpp').onclick = function(){
+    var msg = 'Olá, Victor. Vim através do formulário e gostaria de entender melhor a estrutura da Digital Pressure.';
+    window.open('https://wa.me/5511959373309?text='+encodeURIComponent(msg),'_blank');
+  };
+
+  // mostra resultado imediatamente
+  show('vRes');
+
+  // ══ SALVA NO SUPABASE em background ══
+  var nivel = sc<=5?'critico':sc<=11?'atencao':'estruturando';
+  var obFull = {A:'Autonomia operacional',B:'Visibilidade financeira',C:'Recorrência e conversão',D:'Time autônomo'};
+
+  var payload = {
+    nome:        ANS.nome || '',
+    whatsapp:    ANS.wpp,
+    segmento:    ANS.tipo || '',
+    faturamento: fatLbl[ANS.fat] || '',
+    score:       sc,
+    nivel:       nivel,
+    nivel_label: lvBadge,
+    objetivo:    obFull[ANS.objetivo] || '',
+    dims: {
+      processo:   parseInt(ANS.processo||0),
+      conversao:  parseInt(ANS.conversao||0),
+      ausencia:   parseInt(ANS.ausencia||0),
+      reativacao: parseInt(ANS.reativacao||0),
+      financeiro: parseInt(ANS.financeiro||0),
+      ferias:     parseInt(ANS.ferias||0)
+    },
+    status: 'novo'
+  };
+
+  try {
+    await sb.from('leads_diagnostico').insert(payload);
+  } catch(e) {
+    console.error('Erro ao salvar no Supabase:', e);
+  }
+}
+
+// máscara WhatsApp
+document.getElementById('f-wpp').addEventListener('input', function(){
+  var v = this.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>6)      v = '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
+  else if(v.length>2) v = '('+v.slice(0,2)+') '+v.slice(2);
+  else if(v.length)   v = '('+v;
+  this.value = v;
+});
+</script>
+</body>
+</html>

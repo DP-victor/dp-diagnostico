@@ -3,457 +3,292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagnóstico New Money Club — Vitor & Pedro</title>
+<title>Diagnóstico Comercial — Pedro & Victor</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-/* ============================================================
-   VARIÁVEIS & RESET
-   ============================================================ */
 :root {
   --gold: #C9A84C;
   --gold-light: #E2C068;
-  --gold-dim: rgba(201,168,76,0.15);
-  --gold-border: rgba(201,168,76,0.25);
+  --gold-dim: rgba(201,168,76,0.13);
+  --gold-border: rgba(201,168,76,0.22);
   --black: #080808;
   --surface: #111111;
   --surface2: #181818;
   --surface3: #1e1e1e;
-  --border: rgba(201,168,76,0.14);
-  --border-hover: rgba(201,168,76,0.5);
+  --border: rgba(201,168,76,0.13);
+  --border-h: rgba(201,168,76,0.45);
   --text: #F2EEE4;
   --muted: #777;
   --muted2: #444;
   --red: #e05555;
   --green: #4caf80;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--black);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  min-height: 100vh;
-}
-body::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 999;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:999;}
 
-/* ============================================================
-   TOP BAR & HEADER
-   ============================================================ */
-.topbar {
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--gold) 40%, var(--gold-light) 60%, transparent 100%);
-}
-header {
-  padding: 24px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-  position: sticky; top: 0;
-  background: rgba(8,8,8,0.95);
-  backdrop-filter: blur(12px);
-  z-index: 100;
-}
-.logo { display: flex; align-items: center; gap: 14px; }
-.logo-mark {
-  width: 36px; height: 36px;
-  background: var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 16px; color: var(--black); letter-spacing: 1px; flex-shrink: 0;
-}
-.logo-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--text); }
-.logo-name span { color: var(--gold); }
-.header-right { text-align: right; }
-.header-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.7; display: block; }
-.header-sublabel { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+/* HEADER */
+.topbar{height:2px;background:linear-gradient(90deg,transparent 0%,var(--gold) 40%,var(--gold-light) 60%,transparent 100%);}
+header{padding:22px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,8,0.96);backdrop-filter:blur(12px);z-index:100;}
+.logo{display:flex;align-items:center;gap:14px;}
+.logo-mark{width:36px;height:36px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--black);letter-spacing:1px;flex-shrink:0;}
+.logo-name{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;color:var(--text);}
+.logo-name span{color:var(--gold);}
+.header-right{text-align:right;}
+.header-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.7;display:block;}
+.header-sublabel{font-size:11px;color:var(--muted);letter-spacing:1px;}
 
-/* ============================================================
-   FORM WRAPPER
-   ============================================================ */
-.wrapper { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
-
-.intro { padding: 52px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
-.intro-tag {
-  display: inline-block;
-  background: var(--gold-dim);
-  border: 1px solid var(--gold-border);
-  color: var(--gold);
-  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-  padding: 5px 14px; margin-bottom: 20px;
-}
-.intro h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(42px, 7vw, 68px);
-  letter-spacing: 2px; line-height: 1;
-  color: var(--text); margin-bottom: 16px;
-}
-.intro h1 em { color: var(--gold); font-style: normal; }
-.intro p { font-size: 15px; color: var(--muted); max-width: 540px; font-weight: 300; line-height: 1.7; }
+/* FORM */
+.wrapper{max-width:780px;margin:0 auto;padding:0 24px 80px;}
+.intro{padding:52px 0 40px;border-bottom:1px solid var(--border);margin-bottom:40px;}
+.intro-tag{display:inline-block;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;margin-bottom:20px;}
+.intro h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,7vw,66px);letter-spacing:2px;line-height:1;color:var(--text);margin-bottom:16px;}
+.intro h1 em{color:var(--gold);font-style:normal;}
+.intro p{font-size:15px;color:var(--muted);max-width:540px;font-weight:300;line-height:1.7;}
 
 /* PROGRESS */
-.progress-wrap { margin-bottom: 40px; }
-.progress-meta { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.progress-track { height: 2px; background: var(--surface2); }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transition: width 0.4s ease; }
+.progress-wrap{margin-bottom:40px;}
+.progress-meta{display:flex;justify-content:space-between;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.progress-track{height:2px;background:var(--surface2);}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .4s ease;}
 
 /* BLOCOS */
-.bloco {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 16px;
-  overflow: hidden;
-  transition: border-color 0.2s;
-}
-.bloco:hover { border-color: var(--border-hover); }
-.bloco-header { display: flex; align-items: flex-start; gap: 20px; padding: 24px 28px 20px; border-bottom: 1px solid var(--border); }
-.bloco-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); opacity: 0.4; line-height: 1; flex-shrink: 0; }
-.bloco-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: var(--text); }
-.bloco-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.field-group { padding: 24px 28px; display: grid; gap: 20px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.bloco{background:var(--surface);border:1px solid var(--border);margin-bottom:14px;overflow:hidden;transition:border-color .2s;}
+.bloco:hover{border-color:var(--border-h);}
+.bloco-header{display:flex;align-items:flex-start;gap:20px;padding:22px 26px 18px;border-bottom:1px solid var(--border);}
+.bloco-num{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);opacity:.35;line-height:1;flex-shrink:0;}
+.bloco-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1.5px;color:var(--text);}
+.bloco-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+.field-group{padding:22px 26px;display:grid;gap:18px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field{display:grid;gap:8px;}
+.field-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:.8;}
+.field-label span{color:var(--red);}
+input[type=text],input[type=tel],select,textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 14px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:var(--surface3);}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+select option{background:var(--surface2);}
+textarea{resize:vertical;min-height:80px;}
 
-/* FIELDS */
-.field { display: grid; gap: 8px; }
-.field-label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
-.field-label span { color: var(--red); }
-input[type="text"], input[type="tel"], select, textarea {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  padding: 12px 14px;
-  outline: none;
-  width: 100%;
-  transition: border-color 0.2s;
-  -webkit-appearance: none;
-  appearance: none;
-}
-input:focus, select:focus, textarea:focus { border-color: var(--gold); background: var(--surface3); }
-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-select option { background: var(--surface2); }
-textarea { resize: vertical; min-height: 80px; }
-
-/* OPTIONS LIST */
-.options-list { display: grid; gap: 8px; }
-.options-list.cols-2 { grid-template-columns: 1fr 1fr; }
-.opt-item { cursor: pointer; }
-.opt-item input { display: none; }
-.opt-label {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 16px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  transition: all 0.15s; cursor: pointer;
-}
-.opt-item input:checked + .opt-label {
-  background: var(--gold-dim);
-  border-color: var(--gold);
-}
-.opt-dot {
-  width: 8px; height: 8px;
-  border: 1px solid var(--muted2);
-  border-radius: 50%; flex-shrink: 0;
-  transition: all 0.15s;
-}
-.opt-item input:checked + .opt-label .opt-dot {
-  background: var(--gold); border-color: var(--gold);
-}
-.opt-text { display: flex; flex-direction: column; }
-.opt-text strong { font-size: 13px; font-weight: 500; color: var(--text); }
-.opt-text small { font-size: 11px; color: var(--muted); margin-top: 1px; }
+/* OPTIONS */
+.options-list{display:grid;gap:8px;}
+.options-list.cols-2{grid-template-columns:1fr 1fr;}
+.opt-item{cursor:pointer;}
+.opt-item input{display:none;}
+.opt-label{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);transition:all .15s;cursor:pointer;}
+.opt-item input:checked+.opt-label{background:var(--gold-dim);border-color:var(--gold);}
+.opt-dot{width:8px;height:8px;border:1px solid var(--muted2);border-radius:50%;flex-shrink:0;transition:all .15s;}
+.opt-item input:checked+.opt-label .opt-dot{background:var(--gold);border-color:var(--gold);}
+.opt-text{display:flex;flex-direction:column;}
+.opt-text strong{font-size:13px;font-weight:500;color:var(--text);}
+.opt-text small{font-size:11px;color:var(--muted);margin-top:1px;}
 
 /* TOGGLE */
-.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; background: var(--surface2); border: 1px solid var(--border); }
-.toggle-label-text { font-size: 13px; font-weight: 500; }
-.toggle-label-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.toggle-btns { display: flex; gap: 6px; flex-shrink: 0; }
-.toggle-btn {
-  padding: 6px 18px; font-family: 'Bebas Neue', sans-serif;
-  font-size: 13px; letter-spacing: 1px;
-  background: transparent; border: 1px solid var(--muted2);
-  color: var(--muted); cursor: pointer; transition: all 0.15s;
-}
-.toggle-btn:hover { border-color: var(--gold); color: var(--gold); }
-.toggle-btn.active-sim { background: var(--gold); border-color: var(--gold); color: var(--black); }
-.toggle-btn.active-nao { background: var(--surface3); border-color: var(--red); color: var(--red); }
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;background:var(--surface2);border:1px solid var(--border);}
+.toggle-label-text{font-size:13px;font-weight:500;}
+.toggle-label-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.toggle-btns{display:flex;gap:6px;flex-shrink:0;}
+.toggle-btn{padding:6px 18px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;background:transparent;border:1px solid var(--muted2);color:var(--muted);cursor:pointer;transition:all .15s;}
+.toggle-btn:hover{border-color:var(--gold);color:var(--gold);}
+.toggle-btn.active-sim{background:var(--gold);border-color:var(--gold);color:var(--black);}
+.toggle-btn.active-nao{background:var(--surface3);border-color:var(--red);color:var(--red);}
 
 /* SEP */
-.sep { display: flex; align-items: center; gap: 16px; margin: 32px 0 20px; }
-.sep-line { flex: 1; height: 1px; background: var(--border); }
-.sep-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.sep{display:flex;align-items:center;gap:16px;margin:30px 0 18px;}
+.sep-line{flex:1;height:1px;background:var(--border);}
+.sep-text{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
 
-/* CONDITIONAL */
-.conditional { display: none; }
-.conditional.show { display: grid; }
+.conditional{display:none;}
+.conditional.show{display:grid;}
 
 /* SUBMIT */
-.submit-area { padding: 40px 28px; text-align: center; background: var(--surface); border: 1px solid var(--border); margin-top: 8px; }
-.submit-area h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--text); margin-bottom: 8px; }
-.submit-area p { font-size: 13px; color: var(--muted); margin-bottom: 28px; font-weight: 300; }
-.btn-submit {
-  background: var(--gold); color: var(--black);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px; letter-spacing: 3px;
-  padding: 16px 56px; border: none; cursor: pointer;
-  transition: all 0.2s; width: 100%; max-width: 380px;
-}
-.btn-submit:hover { background: var(--gold-light); }
-.btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-.spinner {
-  display: inline-block; width: 14px; height: 14px;
-  border: 2px solid rgba(0,0,0,0.3); border-top-color: var(--black);
-  border-radius: 50%; animation: spin 0.7s linear infinite;
-  vertical-align: middle; margin-right: 8px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-#error-msg { color: var(--red); font-size: 13px; margin-top: 14px; display: none; }
+.submit-area{padding:40px 26px;text-align:center;background:var(--surface);border:1px solid var(--border);margin-top:8px;}
+.submit-area h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--text);margin-bottom:8px;}
+.submit-area p{font-size:13px;color:var(--muted);margin-bottom:28px;font-weight:300;}
+.btn-submit{background:var(--gold);color:var(--black);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;padding:16px 56px;border:none;cursor:pointer;transition:all .2s;width:100%;max-width:380px;}
+.btn-submit:hover{background:var(--gold-light);}
+.btn-submit:disabled{opacity:.4;cursor:not-allowed;}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.3);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#error-msg{color:var(--red);font-size:13px;margin-top:14px;display:none;}
 
-@media (max-width: 600px) {
-  header { padding: 18px 20px; }
-  .wrapper { padding: 0 16px 60px; }
-  .intro { padding: 36px 0 32px; }
-  .field-row { grid-template-columns: 1fr; }
-  .options-list.cols-2 { grid-template-columns: 1fr; }
-  .submit-area { padding: 24px 20px; }
+@media(max-width:600px){
+  header{padding:18px 20px;}
+  .wrapper{padding:0 16px 60px;}
+  .intro{padding:36px 0 28px;}
+  .field-row{grid-template-columns:1fr;}
+  .options-list.cols-2{grid-template-columns:1fr;}
+  .submit-area{padding:24px 20px;}
 }
 
 /* ============================================================
-   PLANO DE AÇÃO — TELA DE RESULTADO
+   TELA DE CONFIRMAÇÃO (após submit)
    ============================================================ */
-#plano-wrapper {
-  display: none;
-  animation: fadeIn 0.6s ease;
-}
-@keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+#obrigado{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:60px 24px;text-align:center;animation:fadeUp .6s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
-/* Download bar */
-.download-bar {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(8,8,8,0.97);
-  border-bottom: 1px solid var(--gold-border);
-  padding: 14px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  backdrop-filter: blur(16px);
+/* Foto do lead */
+.lead-avatar{
+  width:110px;height:110px;border-radius:50%;
+  border:3px solid var(--gold);
+  object-fit:cover;
+  margin-bottom:28px;
+  box-shadow:0 0 0 6px rgba(201,168,76,.12), 0 0 40px rgba(201,168,76,.15);
+  display:none; /* mostrado só se tiver foto */
 }
-.download-bar-info { font-size: 12px; color: var(--muted); }
-.download-bar-info strong { color: var(--gold); }
-.btn-download {
-  background: var(--gold); color: var(--black);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 15px; letter-spacing: 2px;
-  padding: 10px 32px; border: none; cursor: pointer;
-  transition: all 0.2s; display: flex; align-items: center; gap: 8px;
-}
-.btn-download:hover { background: var(--gold-light); }
-.btn-download:disabled { opacity: 0.4; cursor: not-allowed; }
+.lead-avatar.visible{display:block;}
 
-/* Plano hero */
-.plano-hero {
-  padding: 64px 48px 52px;
-  border-bottom: 1px solid var(--border);
-  position: relative; overflow: hidden;
+/* Iniciais fallback */
+.lead-initials{
+  width:110px;height:110px;border-radius:50%;
+  border:3px solid var(--gold);
+  background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:38px;
+  color:var(--gold);letter-spacing:2px;
+  margin:0 auto 28px;
+  box-shadow:0 0 0 6px rgba(201,168,76,.12), 0 0 40px rgba(201,168,76,.15);
 }
-.plano-hero::before {
-  content: '';
-  position: absolute; top: -100px; right: -100px;
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
-  pointer-events: none;
-}
-.plano-tag {
-  display: inline-block;
-  background: var(--gold-dim);
-  border: 1px solid var(--gold-border);
-  color: var(--gold);
-  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-  padding: 5px 14px; margin-bottom: 24px;
-}
-.plano-hero h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(38px, 5vw, 62px);
-  letter-spacing: 2px; line-height: 1.05;
-  color: var(--text); max-width: 800px; margin-bottom: 18px;
-}
-.plano-hero h1 em { color: var(--gold); font-style: normal; }
-.plano-hero-sub { font-size: 15px; color: var(--muted); max-width: 580px; margin-bottom: 36px; font-weight: 300; }
-.hero-pills { display: flex; gap: 16px; flex-wrap: wrap; }
-.hero-pill {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 14px 22px; min-width: 140px;
-}
-.hero-pill .pval { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); letter-spacing: 1px; line-height: 1; }
-.hero-pill .plbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
 
-/* Plano body */
-.plano-body { max-width: 1000px; margin: 0 auto; padding: 0 48px 80px; }
-.sec-sep { display: flex; align-items: center; gap: 16px; margin: 48px 0 28px; }
-.sec-sep-line { flex: 1; height: 1px; background: var(--border); }
-.sec-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.6; white-space: nowrap; }
-.sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1.5px; color: var(--text); margin-bottom: 20px; }
+.obrigado-eyebrow{
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);opacity:.7;margin-bottom:14px;
+}
+.obrigado-titulo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(36px,6vw,60px);
+  letter-spacing:2px;line-height:1.05;
+  color:var(--text);margin-bottom:8px;
+}
+.obrigado-titulo em{color:var(--gold);font-style:normal;}
+.obrigado-sub{font-size:15px;color:var(--muted);max-width:480px;font-weight:300;line-height:1.7;margin-bottom:40px;}
 
-/* Score */
-.score-section { background: var(--surface); border: 1px solid var(--border); padding: 28px; margin-bottom: 24px; }
-.score-flex { display: flex; align-items: flex-start; gap: 28px; margin-bottom: 24px; }
-.score-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: var(--gold); line-height: 1; flex-shrink: 0; }
-.score-num span { font-size: 28px; color: var(--muted); }
-.score-insight { font-size: 14px; color: var(--muted); line-height: 1.7; padding-top: 8px; }
-.score-bars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-.bar-item { text-align: center; }
-.bar-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-.bar-track { height: 4px; background: var(--surface2); border-radius: 2px; margin-bottom: 4px; }
-.bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 2px; transition: width 1s ease; }
-.bar-val { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--gold); }
+/* Card de próximo passo */
+.next-card{
+  background:var(--surface);
+  border:1px solid var(--gold-border);
+  padding:32px 36px;
+  max-width:500px;width:100%;
+  margin:0 auto 36px;
+  text-align:left;
+}
+.next-card-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:12px;}
+.next-card-text{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px;}
+.btn-agendar{
+  display:block;width:100%;
+  background:var(--gold);color:var(--black);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:17px;letter-spacing:2px;
+  padding:15px 24px;border:none;
+  cursor:pointer;text-decoration:none;
+  text-align:center;transition:background .2s;
+}
+.btn-agendar:hover{background:var(--gold-light);}
 
-/* Diag cards */
-.diag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-.diag-card { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; }
-.diag-card .dlbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
-.diag-card .dval { font-size: 13px; color: var(--text); font-weight: 500; }
-.dval.ok { color: var(--green); }
-.dval.warn { color: var(--gold); }
-.dval.danger { color: var(--red); }
+.obrigado-rodape{font-size:12px;color:var(--muted2);max-width:440px;line-height:1.6;}
 
-/* Gargalos */
-.gargalo {
-  display: flex; gap: 18px;
-  background: var(--surface); border: 1px solid var(--border);
-  padding: 20px 22px; margin-bottom: 10px;
-  border-left: 3px solid var(--gold);
+/* ============================================================
+   PÁGINA DE ADMIN
+   ============================================================ */
+#admin-page{display:none;min-height:100vh;padding:60px 24px;max-width:700px;margin:0 auto;animation:fadeUp .5s ease;}
+.admin-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,50px);letter-spacing:2px;color:var(--text);margin-bottom:6px;}
+.admin-title span{color:var(--gold);}
+.admin-sub{font-size:13px;color:var(--muted);margin-bottom:36px;}
+.admin-card{background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:16px;}
+.admin-card-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;color:var(--gold);margin-bottom:16px;}
+.admin-field{display:grid;gap:8px;margin-bottom:14px;}
+.admin-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.admin-value{font-size:14px;color:var(--text);background:var(--surface2);border:1px solid var(--border);padding:10px 14px;}
+.admin-value.highlight{color:var(--gold);}
+.admin-value.danger{color:var(--red);}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.photo-upload-area{border:1px dashed var(--gold-border);padding:20px;text-align:center;cursor:pointer;transition:border-color .2s;background:var(--surface2);}
+.photo-upload-area:hover{border-color:var(--gold);}
+.photo-upload-area p{font-size:13px;color:var(--muted);margin-top:8px;}
+.photo-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);margin:0 auto 8px;display:none;}
+.photo-preview.visible{display:block;}
+#photo-file-input{display:none;}
+.photo-url-input{margin-top:12px;}
+.photo-url-input label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
+.photo-url-input input{background:var(--surface3);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;width:100%;transition:border-color .2s;}
+.photo-url-input input:focus{border-color:var(--gold);}
+.btn-admin-link{
+  background:var(--gold);color:var(--black);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;letter-spacing:2px;
+  padding:14px 32px;border:none;
+  cursor:pointer;width:100%;margin-top:8px;
+  transition:background .2s;
 }
-.gargalo-icon { font-size: 22px; flex-shrink: 0; line-height: 1.4; }
-.gargalo-title { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 4px; }
-.gargalo-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.btn-admin-link:hover{background:var(--gold-light);}
+.link-gerado{
+  background:var(--surface2);border:1px solid var(--gold-border);
+  padding:14px 16px;margin-top:12px;
+  font-size:12px;color:var(--gold);
+  word-break:break-all;display:none;
+  font-family:monospace;letter-spacing:.5px;
+}
+.copy-hint{font-size:11px;color:var(--muted);margin-top:6px;}
+.badge-score{
+  display:inline-block;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  color:var(--gold);font-family:'Bebas Neue',sans-serif;
+  font-size:28px;letter-spacing:1px;
+  padding:6px 18px;margin-bottom:4px;
+}
+.score-detail{font-size:12px;color:var(--muted);margin-top:4px;}
+.nivel-badge{
+  display:inline-block;padding:4px 12px;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;
+}
+.nivel-base{background:rgba(224,85,85,.12);color:var(--red);border:1px solid rgba(224,85,85,.3);}
+.nivel-intermediario{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid var(--gold-border);}
+.nivel-avancado{background:rgba(76,175,128,.12);color:var(--green);border:1px solid rgba(76,175,128,.3);}
+.resumo-box{background:var(--surface3);border-left:3px solid var(--gold);padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px;}
 
-/* Fases */
-.fase {
-  background: var(--surface); border: 1px solid var(--border);
-  margin-bottom: 12px; overflow: hidden;
-}
-.fase-header {
-  display: flex; align-items: center; gap: 20px;
-  padding: 20px 24px; border-bottom: 1px solid var(--border);
-}
-.fase-num { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: var(--gold); opacity: 0.35; line-height: 1; flex-shrink: 0; }
-.fase-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1.5px; }
-.fase-period { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.fase-tag {
-  margin-left: auto;
-  background: var(--gold-dim); border: 1px solid var(--gold-border);
-  color: var(--gold); font-size: 10px; letter-spacing: 2px;
-  text-transform: uppercase; padding: 4px 12px; flex-shrink: 0;
-}
-.fase-body { padding: 20px 24px; }
-.action-list { list-style: none; display: grid; gap: 12px; }
-.action-item { display: flex; gap: 14px; }
-.action-dot {
-  width: 26px; height: 26px; flex-shrink: 0;
-  background: var(--gold-dim); border: 1px solid var(--gold-border);
-  color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  display: flex; align-items: center; justify-content: center; margin-top: 2px;
-}
-.action-title { font-weight: 600; font-size: 13px; color: var(--text); margin-bottom: 3px; }
-.action-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+/* tabs admin */
+.admin-tabs{display:flex;gap:2px;margin-bottom:24px;border-bottom:1px solid var(--border);}
+.admin-tab{padding:10px 22px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1.5px;cursor:pointer;color:var(--muted);background:transparent;border:none;border-bottom:2px solid transparent;transition:all .2s;}
+.admin-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.admin-tab-content{display:none;}
+.admin-tab-content.active{display:block;}
 
-/* Canais */
-.channels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
-.channel-card {
-  background: var(--surface); border: 1px solid var(--border);
-  padding: 18px 20px; position: relative; overflow: hidden;
-}
-.channel-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
-.channel-card.p1::after { background: var(--gold); }
-.channel-card.p2::after { background: #a78bfa; }
-.channel-card.p3::after { background: #4caf80; }
-.ch-priority { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
-.ch-name { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px; color: var(--text); margin-bottom: 6px; }
-.ch-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
-
-/* Tabela de meta */
-.meta-table { width: 100%; border-collapse: collapse; }
-.meta-table thead tr { border-bottom: 1px solid var(--border); }
-.meta-table th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); padding: 12px 16px; font-weight: 500; }
-.meta-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
-.meta-table tr:last-child td { border-bottom: none; }
-.meta-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
-.badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.badge-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
-.badge-green { background: rgba(76,175,128,0.1); color: #4caf80; border: 1px solid rgba(76,175,128,0.3); }
-
-/* CTA final */
-.cta-block {
-  background: var(--surface); border: 1px solid var(--gold-border);
-  padding: 40px; text-align: center; margin-top: 48px;
-}
-.cta-block h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--text); margin-bottom: 10px; }
-.cta-block p { color: var(--muted); font-size: 14px; max-width: 480px; margin: 0 auto 24px; }
-.cta-btn {
-  display: inline-block;
-  background: var(--gold); color: var(--black);
-  font-family: 'Bebas Neue', sans-serif;
-  font-weight: 700; font-size: 16px; letter-spacing: 2px; text-transform: uppercase;
-  padding: 14px 40px; border: none; cursor: pointer; text-decoration: none;
-  transition: opacity 0.2s;
-}
-.cta-btn:hover { opacity: 0.85; }
-
-/* Footer plano */
-.plano-footer {
-  border-top: 1px solid var(--border);
-  padding: 20px 48px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.plano-footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--muted); }
-.plano-footer-logo span { color: var(--gold); }
-.plano-footer-note { font-size: 11px; color: var(--muted); }
-
-@media (max-width: 700px) {
-  .plano-hero, .plano-body, .plano-footer { padding-left: 20px; padding-right: 20px; }
-  .score-flex { flex-direction: column; gap: 16px; }
-  .score-bars { grid-template-columns: repeat(3, 1fr); }
-  .download-bar { padding: 12px 20px; gap: 12px; }
-  .download-bar-info { font-size: 11px; }
-}
+/* Histórico */
+.historico-list{display:grid;gap:10px;}
+.historico-item{background:var(--surface);border:1px solid var(--border);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;transition:border-color .2s;}
+.historico-item:hover{border-color:var(--border-h);}
+.historico-nome{font-weight:600;font-size:14px;color:var(--text);}
+.historico-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+.historico-score{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);flex-shrink:0;}
+.historico-vazio{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
 </style>
 </head>
 <body>
 
 <div class="topbar"></div>
-
-<!-- =========================================================
-     HEADER FIXO
-     ========================================================= -->
 <header>
   <div class="logo">
-    <div class="logo-mark">VP</div>
-    <span class="logo-name">VITOR & <span>PEDRO</span></span>
+    <div class="logo-mark">PV</div>
+    <span class="logo-name">PEDRO & <span>VICTOR</span></span>
   </div>
   <div class="header-right">
-    <span class="header-label">New Money Club</span>
-    <span class="header-sublabel">Diagnóstico Comercial · CAC Zero</span>
+    <span class="header-label">Diagnóstico Comercial</span>
+    <span class="header-sublabel">Novos clientes sem investir 1 real a mais</span>
   </div>
 </header>
 
 <!-- =========================================================
-     FORMULÁRIO DE DIAGNÓSTICO
+     FORMULÁRIO
      ========================================================= -->
 <div class="wrapper" id="form-wrapper">
-
   <div class="intro">
-    <span class="intro-tag">Diagnóstico Exclusivo · New Money Club</span>
+    <span class="intro-tag">Diagnóstico Comercial Gratuito</span>
     <h1>Vamos Entender<br>o Seu <em>Negócio.</em></h1>
-    <p>Este diagnóstico é gratuito para membros do New Money Club. Com base nas suas respostas, geramos um plano de ação personalizado — pronto para você baixar e já começar a executar.</p>
+    <p>Responda com precisão — cada detalhe aqui define exatamente o que precisa mudar para você conquistar novos clientes todo mês sem gastar R$ 1 a mais em tráfego.</p>
   </div>
 
-  <div class="progress-wrap" id="progress-wrap">
+  <div class="progress-wrap">
     <div class="progress-meta">
       <span id="progress-label">Identificação</span>
       <span id="progress-pct">0%</span>
@@ -466,7 +301,7 @@ textarea { resize: vertical; min-height: 80px; }
   <form id="diag-form" novalidate>
 
     <!-- BLOCO 1 -->
-    <div class="bloco" data-bloco="1">
+    <div class="bloco">
       <div class="bloco-header">
         <div class="bloco-num">01</div>
         <div class="bloco-meta">
@@ -521,7 +356,7 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Situação Comercial</div><div class="sep-line"></div></div>
 
     <!-- BLOCO 2 -->
-    <div class="bloco" data-bloco="2">
+    <div class="bloco">
       <div class="bloco-header">
         <div class="bloco-num">02</div>
         <div class="bloco-meta">
@@ -578,7 +413,7 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Aquisição de Clientes</div><div class="sep-line"></div></div>
 
     <!-- BLOCO 3 -->
-    <div class="bloco" data-bloco="3">
+    <div class="bloco">
       <div class="bloco-header">
         <div class="bloco-num">03</div>
         <div class="bloco-meta">
@@ -599,7 +434,7 @@ textarea { resize: vertical; min-height: 80px; }
           </div>
         </div>
         <div class="field">
-          <label class="field-label">% estimado dos clientes que vem por indicação</label>
+          <label class="field-label">% estimado que vem por indicação</label>
           <select id="dependencia_indicacao">
             <option value="">Selecione...</option>
             <option>Menos de 20%</option>
@@ -610,15 +445,12 @@ textarea { resize: vertical; min-height: 80px; }
           </select>
         </div>
         <div class="field">
-          <label class="field-label">Já fez prospecção ativa de forma estruturada?</label>
+          <label class="field-label">Já fez prospecção ativa estruturada?</label>
           <div class="toggle-row">
-            <div>
-              <div class="toggle-label-text">Já prospectou ativamente</div>
-              <div class="toggle-label-sub">LinkedIn, WhatsApp, cold call...</div>
-            </div>
+            <div><div class="toggle-label-text">Já prospectou ativamente</div><div class="toggle-label-sub">LinkedIn, WhatsApp, cold call...</div></div>
             <div class="toggle-btns">
-              <button type="button" class="toggle-btn" onclick="setToggle('ja_prospectou_ativamente', true, this)">SIM</button>
-              <button type="button" class="toggle-btn" onclick="setToggle('ja_prospectou_ativamente', false, this)">NÃO</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('ja_prospectou_ativamente',true,this)">SIM</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('ja_prospectou_ativamente',false,this)">NÃO</button>
             </div>
           </div>
         </div>
@@ -632,7 +464,7 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Estrutura Comercial</div><div class="sep-line"></div></div>
 
     <!-- BLOCO 4 -->
-    <div class="bloco" data-bloco="4">
+    <div class="bloco">
       <div class="bloco-header">
         <div class="bloco-num">04</div>
         <div class="bloco-meta">
@@ -644,13 +476,10 @@ textarea { resize: vertical; min-height: 80px; }
         <div class="field">
           <label class="field-label">Tem vendedor(es) dedicado(s)?</label>
           <div class="toggle-row">
-            <div>
-              <div class="toggle-label-text">Vendedor dedicado</div>
-              <div class="toggle-label-sub">Exclusivamente para vendas, não o fundador</div>
-            </div>
+            <div><div class="toggle-label-text">Vendedor dedicado</div><div class="toggle-label-sub">Exclusivamente para vendas, não o fundador</div></div>
             <div class="toggle-btns">
-              <button type="button" class="toggle-btn" onclick="setToggle('tem_vendedor', true, this)">SIM</button>
-              <button type="button" class="toggle-btn" onclick="setToggle('tem_vendedor', false, this)">NÃO</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('tem_vendedor',true,this)">SIM</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('tem_vendedor',false,this)">NÃO</button>
             </div>
           </div>
         </div>
@@ -658,22 +487,17 @@ textarea { resize: vertical; min-height: 80px; }
           <label class="field-label">Quantos vendedores?</label>
           <select id="num_vendedores">
             <option value="">Selecione...</option>
-            <option>1 vendedor</option>
-            <option>2 a 3 vendedores</option>
-            <option>4 a 6 vendedores</option>
-            <option>Mais de 6</option>
+            <option>1 vendedor</option><option>2 a 3 vendedores</option>
+            <option>4 a 6 vendedores</option><option>Mais de 6</option>
           </select>
         </div>
         <div class="field">
           <label class="field-label">Usa CRM ou ferramenta para controlar leads?</label>
           <div class="toggle-row">
-            <div>
-              <div class="toggle-label-text">Usa CRM</div>
-              <div class="toggle-label-sub">Planilha também conta</div>
-            </div>
+            <div><div class="toggle-label-text">Usa CRM</div><div class="toggle-label-sub">Planilha também conta</div></div>
             <div class="toggle-btns">
-              <button type="button" class="toggle-btn" onclick="setToggle('usa_crm', true, this)">SIM</button>
-              <button type="button" class="toggle-btn" onclick="setToggle('usa_crm', false, this)">NÃO</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('usa_crm',true,this)">SIM</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('usa_crm',false,this)">NÃO</button>
             </div>
           </div>
         </div>
@@ -684,26 +508,20 @@ textarea { resize: vertical; min-height: 80px; }
         <div class="field">
           <label class="field-label">Tem script ou roteiro de abordagem definido?</label>
           <div class="toggle-row">
-            <div>
-              <div class="toggle-label-text">Script de venda</div>
-              <div class="toggle-label-sub">Sequência clara do primeiro contato ao fechamento</div>
-            </div>
+            <div><div class="toggle-label-text">Script de venda</div><div class="toggle-label-sub">Sequência clara do primeiro contato ao fechamento</div></div>
             <div class="toggle-btns">
-              <button type="button" class="toggle-btn" onclick="setToggle('tem_script_venda', true, this)">SIM</button>
-              <button type="button" class="toggle-btn" onclick="setToggle('tem_script_venda', false, this)">NÃO</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('tem_script_venda',true,this)">SIM</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('tem_script_venda',false,this)">NÃO</button>
             </div>
           </div>
         </div>
         <div class="field">
-          <label class="field-label">Tem meta de vendas definida mensalmente?</label>
+          <label class="field-label">Tem meta de faturamento definida mensalmente?</label>
           <div class="toggle-row">
-            <div>
-              <div class="toggle-label-text">Meta mensal definida</div>
-              <div class="toggle-label-sub">Valor real que você persegue todo mês</div>
-            </div>
+            <div><div class="toggle-label-text">Meta mensal definida</div><div class="toggle-label-sub">Valor real que você persegue todo mês</div></div>
             <div class="toggle-btns">
-              <button type="button" class="toggle-btn" onclick="setToggle('tem_meta_mensal', true, this)">SIM</button>
-              <button type="button" class="toggle-btn" onclick="setToggle('tem_meta_mensal', false, this)">NÃO</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('tem_meta_mensal',true,this)">SIM</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('tem_meta_mensal',false,this)">NÃO</button>
             </div>
           </div>
         </div>
@@ -724,12 +542,9 @@ textarea { resize: vertical; min-height: 80px; }
           <label class="field-label">Taxa de conversão estimada (reunião → fechamento)</label>
           <select id="taxa_conversao_estimada">
             <option value="">Selecione...</option>
-            <option>Menos de 10%</option>
-            <option>10% a 20%</option>
-            <option>20% a 35%</option>
-            <option>35% a 50%</option>
-            <option>Mais de 50%</option>
-            <option>Não sei / nunca medi</option>
+            <option>Menos de 10%</option><option>10% a 20%</option>
+            <option>20% a 35%</option><option>35% a 50%</option>
+            <option>Mais de 50%</option><option>Não sei / nunca medi</option>
           </select>
         </div>
       </div>
@@ -738,7 +553,7 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Gargalos e Expectativas</div><div class="sep-line"></div></div>
 
     <!-- BLOCO 5 -->
-    <div class="bloco" data-bloco="5">
+    <div class="bloco">
       <div class="bloco-header">
         <div class="bloco-num">05</div>
         <div class="bloco-meta">
@@ -790,122 +605,151 @@ textarea { resize: vertical; min-height: 80px; }
     <!-- SUBMIT -->
     <div class="submit-area">
       <h3>Tudo Pronto.</h3>
-      <p>Suas respostas geram um plano de ação personalizado — já pronto para baixar e levar para a call.</p>
-      <button type="submit" class="btn-submit" id="btn-submit">GERAR MEU PLANO DE AÇÃO →</button>
+      <p>Suas respostas vão direto para Pedro & Victor prepararem seu diagnóstico personalizado.</p>
+      <button type="submit" class="btn-submit" id="btn-submit">ENVIAR →</button>
       <div id="error-msg"></div>
     </div>
 
   </form>
-</div><!-- /form-wrapper -->
+</div>
 
 <!-- =========================================================
-     PLANO DE AÇÃO — RESULTADO AUTOMÁTICO
+     TELA DE CONFIRMAÇÃO
      ========================================================= -->
-<div id="plano-wrapper">
+<div id="obrigado">
+  <!-- Avatar — foto inserida via admin ou iniciais como fallback -->
+  <img id="lead-foto" class="lead-avatar" src="" alt="">
+  <div class="lead-initials" id="lead-initials">—</div>
 
-  <!-- Barra de download fixa -->
-  <div class="download-bar">
-    <div class="download-bar-info">
-      Plano gerado para <strong id="dl-nome">—</strong> · <strong id="dl-data">—</strong>
-    </div>
-    <button class="btn-download" id="btn-baixar" onclick="baixarPDF()">
-      ⬇ BAIXAR PLANO PDF
-    </button>
+  <div class="obrigado-eyebrow">Bem-vindo ao seu diagnóstico</div>
+  <div class="obrigado-titulo">Recebemos,<br><em id="obrigado-nome">—</em></div>
+  <p class="obrigado-sub">
+    Suas respostas já estão com Pedro & Victor.<br>
+    O próximo passo é uma conversa rápida para montar seu plano de ataque — <strong style="color:var(--text)">novos clientes sem investir R$ 1 a mais.</strong>
+  </p>
+
+  <div class="next-card">
+    <div class="next-card-label">Próximo passo</div>
+    <p class="next-card-text">
+      Agende agora uma call de 30 minutos com Pedro para analisar seu diagnóstico e montar o plano personalizado para o seu negócio. <strong style="color:var(--text)">Vagas abertas para hoje e amanhã.</strong>
+    </p>
+    <a class="btn-agendar" href="https://cal.com/pedro-ribeiro-q6wetp/30min" target="_blank" rel="noopener">
+      AGENDAR MINHA CALL AGORA →
+    </a>
   </div>
 
-  <!-- Conteúdo do plano (será capturado pelo html2pdf) -->
-  <div id="plano-conteudo">
+  <p class="obrigado-rodape">
+    Dúvidas? Fale direto com Pedro no WhatsApp.<br>
+    Pedro & Victor — Novos clientes sem investir 1 real a mais na operação.
+  </p>
+</div>
 
-    <!-- Hero -->
-    <div class="plano-hero">
-      <div class="plano-tag" id="p-tag">Plano de Captação Ativa · 90 dias</div>
-      <h1 id="p-titulo">De onde você está para <em id="p-meta-titulo">sua meta</em> com estrutura e método.</h1>
-      <p class="plano-hero-sub" id="p-sub">Diagnóstico completo + estratégia de prospecção ativa CAC Zero para destravar seu crescimento comercial.</p>
-      <div class="hero-pills">
-        <div class="hero-pill"><div class="pval" id="p-fat">—</div><div class="plbl">Faturamento atual</div></div>
-        <div class="hero-pill"><div class="pval" id="p-ticket">—</div><div class="plbl">Ticket médio</div></div>
-        <div class="hero-pill"><div class="pval" id="p-clientes">—</div><div class="plbl">Clientes ativos</div></div>
-        <div class="hero-pill"><div class="pval" id="p-score">—</div><div class="plbl">Score CAC Zero</div></div>
+<!-- =========================================================
+     ADMIN — acessado via ?admin=1
+     ========================================================= -->
+<div id="admin-page">
+  <div class="admin-title">Admin <span>Pedro & Victor</span></div>
+  <p class="admin-sub">Visualize os diagnósticos, adicione a foto do lead e gere o link personalizado.</p>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchTab('leads')">Diagnósticos</button>
+    <button class="admin-tab" onclick="switchTab('link')">Gerar Link com Foto</button>
+  </div>
+
+  <!-- TAB: LISTA DE LEADS -->
+  <div id="tab-leads" class="admin-tab-content active">
+    <div class="historico-list" id="historico-list">
+      <div class="historico-vazio">Carregando diagnósticos...</div>
+    </div>
+  </div>
+
+  <!-- TAB: GERAR LINK -->
+  <div id="tab-link" class="admin-tab-content">
+    <div class="admin-card">
+      <div class="admin-card-title">Selecionar Lead</div>
+      <div class="field" style="margin-bottom:16px;">
+        <label class="admin-label">Lead (pelo nome ou WhatsApp)</label>
+        <select id="select-lead" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 14px;outline:none;width:100%;appearance:none;">
+          <option value="">Selecione um lead...</option>
+        </select>
+      </div>
+
+      <!-- Upload / URL da foto -->
+      <div class="admin-card-title">Foto do Lead (opcional)</div>
+      <div class="photo-upload-area" onclick="document.getElementById('photo-file-input').click()">
+        <img id="photo-preview" class="photo-preview" src="" alt="">
+        <p id="photo-upload-text">Clique para fazer upload da foto</p>
+      </div>
+      <input type="file" id="photo-file-input" accept="image/*" onchange="handlePhotoUpload(this)">
+
+      <div class="photo-url-input">
+        <label>Ou cole a URL da foto</label>
+        <input type="text" id="photo-url-input" placeholder="https://..." oninput="previewPhotoURL(this.value)">
       </div>
     </div>
 
-    <div class="plano-body">
-
-      <!-- 01 DIAGNÓSTICO -->
-      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">01 · Diagnóstico</span><div class="sec-sep-line"></div></div>
-      <div class="sec-title">O que o diagnóstico revelou</div>
-
-      <div class="score-section">
-        <div class="score-flex">
-          <div class="score-num" id="p-score-big">—<span>/99</span></div>
-          <div class="score-insight" id="p-score-insight">—</div>
-        </div>
-        <div class="score-bars" id="p-score-bars">
-          <!-- preenchido via JS -->
-        </div>
-      </div>
-
-      <div class="diag-grid" id="p-diag-grid">
-        <!-- preenchido via JS -->
-      </div>
-
-      <!-- 02 GARGALOS -->
-      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">02 · Gargalos</span><div class="sec-sep-line"></div></div>
-      <div class="sec-title" id="p-gargalo-titulo">O que está travando seu crescimento</div>
-      <div id="p-gargalos">
-        <!-- preenchido via JS -->
-      </div>
-
-      <!-- 03 PLANO 90 DIAS -->
-      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">03 · Plano de Ação</span><div class="sec-sep-line"></div></div>
-      <div class="sec-title">90 dias para chegar na sua meta</div>
-      <div id="p-fases">
-        <!-- preenchido via JS -->
-      </div>
-
-      <!-- 04 CANAIS -->
-      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">04 · Canais de Prospecção</span><div class="sec-sep-line"></div></div>
-      <div class="sec-title">Canais recomendados para seu perfil</div>
-      <div class="channels-grid" id="p-canais">
-        <!-- preenchido via JS -->
-      </div>
-
-      <!-- 05 MATEMÁTICA DA META -->
-      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">05 · Matemática da Meta</span><div class="sec-sep-line"></div></div>
-      <div class="sec-title">Como sua meta se constrói</div>
-      <div class="score-section">
-        <table class="meta-table" id="p-math-table">
-          <!-- preenchido via JS -->
-        </table>
-      </div>
-
-      <!-- CTA FINAL -->
-      <div class="cta-block">
-        <h3>Próximo Passo: Sessão de Aceleração</h3>
-        <p id="p-cta-text">Este plano foi construído com base no seu diagnóstico. O próximo passo é colocar a máquina em movimento com o método completo.</p>
-        <button class="cta-btn" onclick="baixarPDF()">⬇ BAIXAR ESTE PLANO</button>
-      </div>
-
-    </div><!-- /plano-body -->
-
-    <div class="plano-footer">
-      <div class="plano-footer-logo">VITOR & <span>PEDRO</span> · New Money Club</div>
-      <div class="plano-footer-note" id="p-footer-date">—</div>
+    <div class="admin-card">
+      <div class="admin-card-title">Link Personalizado</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Gera um link que ao ser aberto já mostra a tela de confirmação com a foto e nome do lead — pronto para enviar no WhatsApp.</p>
+      <button class="btn-admin-link" onclick="gerarLink()">GERAR LINK PERSONALIZADO</button>
+      <div id="link-gerado" class="link-gerado"></div>
+      <p class="copy-hint" id="copy-hint" style="display:none;">Clique no link acima para copiar.</p>
     </div>
-
-  </div><!-- /plano-conteudo -->
-
-</div><!-- /plano-wrapper -->
+  </div>
+</div>
 
 <script>
 // ============================================================
-// SUPABASE CONFIG
+// CONFIG SUPABASE
 // ============================================================
 const SB_URL = 'https://chxlseszedcnmqqryusz.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoeGxzZXN6ZWRjbm1xcXJ5dXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTcyMDcsImV4cCI6MjA5MDYzMzIwN30.WPAltPpCyLtgp8BulahVXU8z9rzlfezhZChc-0lu-6M';
 
 // ============================================================
-// TOGGLE STATE
+// ROTEAMENTO — ?admin=1 ou ?obrigado=1&nome=X&foto=Y
+// ============================================================
+(function route() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('admin') === '1') {
+    document.getElementById('form-wrapper').style.display = 'none';
+    document.getElementById('admin-page').style.display = 'block';
+    carregarLeads();
+    return;
+  }
+  if (p.get('obrigado') === '1') {
+    const nome = decodeURIComponent(p.get('nome') || '');
+    const foto = decodeURIComponent(p.get('foto') || '');
+    document.getElementById('form-wrapper').style.display = 'none';
+    mostrarObrigado(nome, foto);
+    return;
+  }
+})();
+
+// ============================================================
+// TELA OBRIGADO
+// ============================================================
+function mostrarObrigado(nome, foto) {
+  const el = document.getElementById('obrigado');
+  el.style.display = 'flex';
+
+  const primeiroNome = nome.split(' ')[0] || 'você';
+  document.getElementById('obrigado-nome').textContent = primeiroNome + '.';
+
+  if (foto) {
+    const imgEl = document.getElementById('lead-foto');
+    imgEl.src = foto;
+    imgEl.classList.add('visible');
+    document.getElementById('lead-initials').style.display = 'none';
+  } else {
+    // Iniciais
+    const initials = nome.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase() || '?';
+    document.getElementById('lead-initials').textContent = initials;
+    document.getElementById('lead-initials').style.display = 'flex';
+  }
+}
+
+// ============================================================
+// TOGGLES
 // ============================================================
 const toggleState = {};
 function setToggle(field, val, btn) {
@@ -938,13 +782,13 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
 });
 
 // ============================================================
-// SCORE ENGINE
+// SCORE
 // ============================================================
 function calcScore(d) {
   const breakdown = {};
   const fatMap = {'Até R$10K/mês':10,'R$10K–R$30K/mês':20,'R$30K–R$80K/mês':28,'Acima de R$80K/mês':35};
   breakdown.faturamento = fatMap[d.faturamento_atual] || 15;
-  const procMap = { 'Não tenho processo — espero os clientes aparecerem':20, 'Processo básico — sem cadência definida':16, 'Processo definido mas inconsistente':10, 'Processo estruturado — executo diariamente':6 };
+  const procMap = {'Não tenho processo — espero os clientes aparecerem':20,'Processo básico — sem cadência definida':16,'Processo definido mas inconsistente':10,'Processo estruturado — executo diariamente':6};
   breakdown.processo = procMap[d.processo_prospeccao] || 12;
   const indMap = {'Menos de 20%':4,'20% a 40%':8,'40% a 60%':12,'60% a 80%':16,'Mais de 80% — quase tudo é indicação':18};
   breakdown.dependencia = indMap[d.dependencia_indicacao] || 8;
@@ -956,259 +800,9 @@ function calcScore(d) {
   breakdown.infra = Math.min(infra, 18);
   const dispMap = {'Menos de 5h/semana':2,'5 a 10h/semana':5,'10 a 20h/semana':8,'Mais de 20h/semana — comprometido 100%':12};
   breakdown.disponibilidade = dispMap[d.disponibilidade_implementacao] || 4;
-  let score = Math.min(Object.values(breakdown).reduce((a,b)=>a+b,0), 99);
+  const score = Math.min(Object.values(breakdown).reduce((a,b)=>a+b,0), 99);
   const nivel = score >= 70 ? 'avancado' : score >= 45 ? 'intermediario' : 'base';
   return { score, breakdown, nivel };
-}
-
-// ============================================================
-// GERAÇÃO DO PLANO
-// ============================================================
-function gerarPlano(d, score, breakdown, nivel) {
-  const hoje = new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
-  const primeiroNome = d.nome_responsavel.split(' ')[0];
-  const metaTexto = d.meta_faturamento_90d || 'sua meta de faturamento';
-  const metaCurta = d.meta_faturamento_90d ? d.meta_faturamento_90d : 'sua meta';
-
-  // Header da barra de download
-  document.getElementById('dl-nome').textContent = d.nome_responsavel;
-  document.getElementById('dl-data').textContent = hoje;
-
-  // Hero
-  document.getElementById('p-tag').textContent = `Plano CAC Zero · ${d.segmento || 'Serviços B2B'} · 90 dias`;
-  document.getElementById('p-titulo').innerHTML = `De onde você está para <em>${metaCurta}</em> com estrutura e método.`;
-  document.getElementById('p-sub').textContent = `Diagnóstico completo + estratégia de prospecção ativa CAC Zero personalizada para ${primeiroNome} — ${d.segmento || 'seu negócio'}.`;
-  document.getElementById('p-fat').textContent = d.faturamento_atual ? d.faturamento_atual.replace('/mês','').replace('Acima de ','') : '—';
-  document.getElementById('p-ticket').textContent = d.ticket_medio ? d.ticket_medio.replace('Até ','<') : '—';
-  document.getElementById('p-clientes').textContent = d.num_clientes_ativos || '—';
-  document.getElementById('p-score').textContent = `${score}/99`;
-  document.getElementById('p-footer-date').textContent = `Plano gerado em ${hoje} · Diagnóstico: ${d.nome_responsavel}`;
-
-  // Score Big
-  document.getElementById('p-score-big').innerHTML = `${score}<span>/99</span>`;
-  const nivelMap = {
-    base: `Estrutura comercial inicial — alto potencial de avanço rápido com o método CAC Zero. ${primeiroNome} tem os ingredientes certos, falta o processo.`,
-    intermediario: `Base estruturada parcialmente — foco em cadência e conversão. Com prospecção ativa consistente, ${primeiroNome} dobra o faturamento em 60 dias.`,
-    avancado: `Operação madura — foco em escala com CAC Zero e previsibilidade total. ${primeiroNome} está pronto para sistematizar e multiplicar.`
-  };
-  document.getElementById('p-score-insight').textContent = nivelMap[nivel] + (d.disponibilidade_implementacao ? ` Disponibilidade declarada: ${d.disponibilidade_implementacao}.` : '');
-
-  // Score bars
-  const barLabels = ['Faturamento','Processo','Dependência','Infra Comercial','Disponib.'];
-  const barKeys = ['faturamento','processo','dependencia','infra','disponibilidade'];
-  const barMax = [35, 20, 18, 18, 12];
-  document.getElementById('p-score-bars').innerHTML = barKeys.map((k,i) => {
-    const v = breakdown[k] || 0;
-    const pct = Math.round((v/barMax[i])*100);
-    return `<div class="bar-item"><div class="bar-lbl">${barLabels[i]}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><div class="bar-val">${v}</div></div>`;
-  }).join('');
-
-  // Diag grid
-  const diagItems = [
-    { lbl: 'Nome', val: d.nome_responsavel, cls: '' },
-    { lbl: 'Segmento', val: d.segmento || '—', cls: '' },
-    { lbl: 'Produto principal', val: d.principal_produto || '—', cls: '' },
-    { lbl: 'Ticket médio', val: d.ticket_medio || '—', cls: 'warn' },
-    { lbl: 'Canal principal atual', val: d.canal_aquisicao || '—', cls: d.canal_aquisicao === 'Prospecção ativa (eu abordo)' ? 'ok' : 'warn' },
-    { lbl: 'Dependência de indicação', val: d.dependencia_indicacao || '—', cls: (d.dependencia_indicacao||'').includes('80%') ? 'danger' : 'warn' },
-    { lbl: 'Vendedor dedicado', val: d.tem_vendedor ? 'Sim' : 'Não — fundador vende', cls: d.tem_vendedor ? 'ok' : 'warn' },
-    { lbl: 'Script de venda', val: d.tem_script_venda ? 'Tem script' : 'Não tem — gargalo direto', cls: d.tem_script_venda ? 'ok' : 'danger' },
-    { lbl: 'CRM / controle', val: d.usa_crm ? (d.qual_crm||'Usa CRM') : 'Não usa — risco de perda', cls: d.usa_crm ? 'ok' : 'danger' },
-    { lbl: 'Maior obstáculo', val: d.maior_obstaculo || '—', cls: 'danger' },
-    { lbl: 'Onde perde mais vendas', val: d.onde_perde_venda || '—', cls: 'warn' },
-    { lbl: 'Taxa de conversão', val: d.taxa_conversao_estimada || '—', cls: '' },
-  ];
-  document.getElementById('p-diag-grid').innerHTML = diagItems.map(it =>
-    `<div class="diag-card"><div class="dlbl">${it.lbl}</div><div class="dval ${it.cls}">${it.val}</div></div>`
-  ).join('');
-
-  // Gargalos — dinâmico baseado nas respostas
-  const gargalos = [];
-  const obstaculo = d.maior_obstaculo || '';
-  const perdaVenda = d.onde_perde_venda || '';
-  const canal = d.canal_aquisicao || '';
-
-  if (!d.tem_script_venda) {
-    gargalos.push({ icon:'📝', title:'Sem script de venda definido', text:`${primeiroNome} aborda cada oportunidade no improviso. Sem um roteiro claro do primeiro contato ao fechamento, a taxa de conversão é instável e dependente do humor do dia.` });
-  }
-  if (obstaculo.includes('leads')) {
-    gargalos.push({ icon:'⚡', title:'Sem motor de prospecção ativa', text:`Toda geração de leads depende de canal passivo. Quando o fluxo seca, o faturamento para. Precisa de um processo diário de outreach com ICP definido — 50 contatos/semana é o mínimo.` });
-  }
-  if (obstaculo.includes('previsibilidade') || !d.tem_meta_mensal) {
-    gargalos.push({ icon:'📊', title:'Sem previsibilidade comercial', text:`Sem meta definida e KPIs acompanhados, cada mês é uma surpresa. O método CAC Zero estabelece cadência semanal: 50 contatos → reuniões → propostas → fechamentos. Número controlado.` });
-  }
-  if (perdaVenda.includes('agendamento') || perdaVenda.includes('abordagem')) {
-    gargalos.push({ icon:'📅', title:`Perda no ${perdaVenda.includes('agendamento') ? 'agendamento' : 'primeiro contato'}`, text:`O maior vazamento de negócios acontece antes da reunião. Falta sequência de follow-up estruturada. O lead some e não volta — não por desinteresse, mas por falta de cadência.` });
-  }
-  if (obstaculo.includes('tráfego') || canal.includes('Tráfego')) {
-    gargalos.push({ icon:'💸', title:'Dependência de tráfego pago', text:`Quando para de investir em anúncios, as vendas somem. O método CAC Zero constrói um canal de aquisição independente de mídia — prospecção ativa com custo zero de aquisição.` });
-  }
-  if (!d.usa_crm) {
-    gargalos.push({ icon:'🗂️', title:'Sem controle da pipeline', text:`Sem CRM, oportunidades se perdem no WhatsApp. Não é possível saber quantos leads estão em cada etapa, qual a taxa real de conversão ou onde o funil está vazando.` });
-  }
-  // Garantir pelo menos 3 gargalos
-  if (gargalos.length < 3) {
-    gargalos.push({ icon:'⏱️', title:'Crescimento dependente do fundador', text:`O fundador ainda é o principal responsável pela venda. Isso cria um teto de crescimento — não é possível escalar sem estruturar um processo replicável.` });
-  }
-
-  document.getElementById('p-gargalo-titulo').textContent = `O que está travando ${primeiroNome}`;
-  document.getElementById('p-gargalos').innerHTML = gargalos.slice(0,5).map(g =>
-    `<div class="gargalo"><div class="gargalo-icon">${g.icon}</div><div><div class="gargalo-title">${g.title}</div><div class="gargalo-text">${g.text}</div></div></div>`
-  ).join('');
-
-  // Plano 90 dias — personalizado por segmento e nível
-  const seg = d.segmento || 'Serviços B2B';
-  const icpMap = {
-    'Contabilidade / Tributário': 'empresários com faturamento acima de R$500K/ano que precisam de BPO fiscal ou planejamento tributário',
-    'Advocacia / Jurídico': 'empresas com faturamento acima de R$1M/ano com demanda jurídica recorrente (trabalhista, contratos, tributário)',
-    'Saúde / Clínicas': 'pacientes ou planos corporativos — convênios e empresas que precisam de saúde ocupacional ou atendimento recorrente',
-    'Educação / Treinamento': 'empresas com times que precisam de capacitação — RH e gestores de T&D com orçamento definido',
-    'Consultoria / Gestão': 'empresários de serviços e indústria com faturamento entre R$500K e R$5M/ano em busca de estruturação operacional',
-    'RH / Recrutamento': 'empresas em expansão com demanda recorrente de contratação ou gestão de benefícios',
-    'Tecnologia / SaaS': 'empresas B2B com operação digital que precisam de automação, integração ou desenvolvimento',
-    'Agência / Marketing': 'empresas com orçamento de comunicação acima de R$5K/mês que querem resultado mensurável',
-    'Serviços B2B': 'empresários de serviços com faturamento entre R$300K e R$3M/ano que querem crescer sem depender de tráfego',
-  };
-  const icp = icpMap[seg] || icpMap['Serviços B2B'];
-
-  const parceirosSeg = {
-    'Contabilidade / Tributário': 'advogados tributaristas, consultores de gestão e BPOs de RH',
-    'Advocacia / Jurídico': 'contadores, consultores financeiros e assessores de M&A',
-    'Saúde / Clínicas': 'RH de empresas, corretores de planos de saúde e gestores de benefícios',
-    'Educação / Treinamento': 'consultorias de gestão, RH corporativo e associações de classe',
-    'Consultoria / Gestão': 'contadores, bancos, investidores e advogados empresariais',
-    'default': 'contadores, advogados e consultores de gestão',
-  };
-  const parceiros = parceirosSeg[seg] || parceirosSeg['default'];
-
-  const fases = [
-    {
-      num:'01', name:'Estruturação — Casa Arrumada', period:'Dias 1 – 30', tag:'Fundação',
-      acoes: [
-        { dot:'A', title:'Definir ICP com precisão cirúrgica', desc:`Segmento-alvo: ${icp}. Mapear dor principal, cargo decisor, objeções e momento de compra. A prospecção ruim nasce de ICP indefinido — isso é o ponto zero.` },
-        { dot:'B', title:'Criar script de abordagem e diagnóstico', desc:`Script de WhatsApp frio, script para agendar reunião e roteiro de diagnóstico + fechamento. O vendedor (ou ${primeiroNome}) usa o roteiro — sem improvisar.` },
-        { dot:'C', title:`Estruturar controle de pipeline`, desc:`Colunas claras: Abordagem → Reunião Agendada → Em Proposta → Fechado. Atualização diária. Sem controle, não existe gestão comercial.` },
-        { dot:'D', title:'Mapeamento da base existente (Farmer)', desc:`Listar clientes ativos por ticket, ex-clientes dos últimos 2 anos e leads que não fecharam. Segmentar por oportunidade: upsell, reativação ou indicação ativa.` },
-      ]
-    },
-    {
-      num:'02', name:'Ativação — Motor Ligado', period:'Dias 31 – 60', tag:'Execução',
-      acoes: [
-        { dot:'A', title:'Prospecção ativa — 50 contatos/semana', desc:`Via LinkedIn + WhatsApp focado no ICP mapeado. Meta: 10 reuniões agendadas/semana com taxa de 20%. O volume é o que separa quem prospecta de quem tenta.` },
-        { dot:'B', title:'Executar Farmer — upsell e reativação', desc:`Semana 1-2: campanha de upsell para clientes no menor ticket. Semana 3-4: reativação de ex-clientes. Receita mais rápida com custo zero.` },
-        { dot:'C', title:'Ativar canal de parceiros', desc:`Formalizar parcerias com ${parceiros}. Cada parceiro ativo é um canal de leads qualificados com ICP natural e custo de aquisição zero.` },
-        { dot:'D', title:'LinkedIn como canal de atração', desc:`Conteúdo de autoridade voltado para o ICP — casos reais, erros comuns do segmento, diagnósticos públicos. Audiência com poder de compra e ciclo de venda mais curto.` },
-      ]
-    },
-    {
-      num:'03', name:'Aceleração — Escalar o que Funciona', period:'Dias 61 – 90', tag:'Escala',
-      acoes: [
-        { dot:'A', title:'Dobrar aposta no canal com melhor ROI', desc:`Identificar qual canal entregou mais reunião por esforço nos 30 dias anteriores. Concentrar 70% da energia ali. Parar o que não funciona sem culpa.` },
-        { dot:'B', title:'Criar oferta de entrada de menor fricção', desc:`Para quem hesita no ticket cheio: um diagnóstico pago (R$300–R$800) que converte naturalmente para o contrato mensal. Reduz o "preciso pensar" e antecipa receita.` },
-        { dot:'C', title:'Review semanal de pipeline com o método', desc:`Weekly de 30 minutos toda segunda: contatos, reuniões, propostas, fechamentos. Cadência que transforma prospecção em previsibilidade — nunca mais um mês surpresa.` },
-        { dot:'D', title:'Consolidar parceiros e programa de indicação', desc:`Comunicar formalmente para toda a base: regras simples, benefício claro. Cada indicação que fecha gera bônus para o indicador. Meta: 8 indicações/mês ativos.` },
-      ]
-    }
-  ];
-
-  document.getElementById('p-fases').innerHTML = fases.map(f => `
-    <div class="fase">
-      <div class="fase-header">
-        <div class="fase-num">${f.num}</div>
-        <div><div class="fase-name">${f.name}</div><div class="fase-period">${f.period}</div></div>
-        <div class="fase-tag">${f.tag}</div>
-      </div>
-      <div class="fase-body">
-        <ul class="action-list">
-          ${f.acoes.map(a=>`<li class="action-item"><div class="action-dot">${a.dot}</div><div><div class="action-title">${a.title}</div><div class="action-desc">${a.desc}</div></div></li>`).join('')}
-        </ul>
-      </div>
-    </div>
-  `).join('');
-
-  // Canais — priorizados pelo perfil
-  const canaisBase = [
-    { p:'p1', priority:'Prioridade Alta', name:'WhatsApp Outreach', desc:`Abordagem direta com script personalizado para o ICP de ${seg}. Canal mais rápido para agendar reunião no Brasil. 50 contatos/semana mínimo.` },
-    { p:'p1', priority:'Prioridade Alta', name:'Base Existente (Farmer)', desc:`Upsell, reativação e indicação da base atual de clientes + ex-clientes. Canal de maior conversão e menor custo de aquisição — zero investimento.` },
-    { p:'p1', priority:'Prioridade Alta', name:'Parcerias Ativas', desc:`${parceiros.charAt(0).toUpperCase() + parceiros.slice(1)} como fonte de leads qualificados. Formalizar com SLA e comunicação regular.` },
-    { p:'p2', priority:'Prioridade Média', name:'LinkedIn', desc:`Conteúdo de autoridade + prospecção direta com o decisor certo. Audiência com poder decisório e ciclo de compra mais rápido.` },
-    { p:'p2', priority:'Prioridade Média', name:'Indicação Estruturada', desc:`Programa formal com benefício claro. Pedir indicação no momento certo — logo após uma vitória do cliente. Meta: 8 indicações/mês.` },
-    { p:'p3', priority:'Complementar', name:'Eventos e Palestras', desc:`Para ${seg}: presença em associações do setor gera leads quentes com confiança prévia. ROI alto por relacionamento.` },
-  ];
-  document.getElementById('p-canais').innerHTML = canaisBase.map(c =>
-    `<div class="channel-card ${c.p}"><div class="ch-priority">${c.priority}</div><div class="ch-name">${c.name}</div><div class="ch-desc">${c.desc}</div></div>`
-  ).join('');
-
-  // Matemática da meta — baseada no ticket declarado
-  const ticketNum = { 'Até R$1.500':1500, 'R$1.500–R$5.000':3000, 'R$5.000–R$15.000':8000, 'Acima de R$15.000':15000 };
-  const ticket = ticketNum[d.ticket_medio] || 3000;
-  const ticketFmt = ticket >= 1000 ? `R$${(ticket/1000).toFixed(0)}K` : `R$${ticket}`;
-  const upsell = Math.round(ticket * 0.8);
-  const upsellFmt = `R$${Math.round(upsell/1000)}K`;
-
-  document.getElementById('p-math-table').innerHTML = `
-    <thead><tr>
-      <th>Origem</th><th>Ação</th><th>Resultado esperado</th><th>Receita estimada</th>
-    </tr></thead>
-    <tbody>
-      <tr>
-        <td>Base atual — Upsell</td>
-        <td>8 clientes no menor ticket migram para pacote superior</td>
-        <td>+${upsellFmt}/mês por cliente</td>
-        <td><span class="badge badge-gold">+${(upsell*8/1000).toFixed(0)}K/mês</span></td>
-      </tr>
-      <tr>
-        <td>Reativação ex-clientes</td>
-        <td>4 ex-clientes reativados (ticket médio ${ticketFmt})</td>
-        <td>4 novos contratos mensais</td>
-        <td><span class="badge badge-gold">+${(ticket*4/1000).toFixed(0)}K/mês</span></td>
-      </tr>
-      <tr>
-        <td>Indicação ativa</td>
-        <td>8 indicações → 3 fechamentos (37% conv.)</td>
-        <td>3 novos contratos ${ticketFmt}</td>
-        <td><span class="badge badge-green">+${(ticket*3/1000).toFixed(0)}K/mês</span></td>
-      </tr>
-      <tr>
-        <td>Prospecção ativa outbound</td>
-        <td>50 contatos/sem → 10 reuniões → 3 fechamentos/sem</td>
-        <td>12 contratos/mês × ${ticketFmt}</td>
-        <td><span class="badge badge-green">+${(ticket*12/1000).toFixed(0)}K/mês</span></td>
-      </tr>
-      <tr>
-        <td colspan="3" style="font-weight:700;color:#F2EEE4;text-align:right;padding-top:20px;">Total Recorrência Potencial (90 dias)</td>
-        <td style="padding-top:20px;"><span class="badge badge-gold" style="font-size:13px;padding:5px 14px;">${((upsell*8 + ticket*4 + ticket*3 + ticket*12)/1000).toFixed(0)}K/mês</span></td>
-      </tr>
-    </tbody>
-  `;
-
-  // CTA text
-  document.getElementById('p-cta-text').textContent = `Este plano foi construído com base no diagnóstico de ${primeiroNome}. O próximo passo é uma sessão de aceleração para colocar o motor em movimento — com o método completo de Vitor & Pedro.`;
-}
-
-// ============================================================
-// DOWNLOAD PDF
-// ============================================================
-function baixarPDF() {
-  const btn = document.getElementById('btn-baixar');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>GERANDO PDF...';
-  const nome = document.getElementById('dl-nome').textContent.replace(/\s+/g,'_');
-  const opt = {
-    margin: 0,
-    filename: `Plano_CAC_Zero_${nome}.pdf`,
-    image: { type:'jpeg', quality:0.97 },
-    html2canvas: { scale:2, useCORS:true, backgroundColor:'#080808', logging:false },
-    jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
-    pagebreak: { mode:['avoid-all','css','legacy'] }
-  };
-  html2pdf().set(opt).from(document.getElementById('plano-conteudo')).save().then(() => {
-    btn.disabled = false;
-    btn.innerHTML = '⬇ BAIXAR PLANO PDF';
-  }).catch(() => {
-    btn.disabled = false;
-    btn.innerHTML = '⬇ BAIXAR PLANO PDF';
-  });
 }
 
 // ============================================================
@@ -1226,54 +820,51 @@ document.getElementById('diag-form').addEventListener('submit', async (e) => {
   if (!get('nome_responsavel') || !get('whatsapp') || !radio('faturamento_atual') || !radio('maior_obstaculo') || !get('principal_expectativa') || !get('principal_produto')) {
     errEl.textContent = 'Por favor, preencha os campos obrigatórios marcados com *.';
     errEl.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top:0, behavior:'smooth' });
     return;
   }
 
   const payload = {
-    nome_responsavel:       get('nome_responsavel'),
-    cargo_responsavel:      get('cargo_responsavel'),
-    whatsapp:               get('whatsapp'),
-    segmento:               get('segmento'),
-    principal_produto:      get('principal_produto'),
-    diferencial_percebido:  get('diferencial_percebido'),
-    faturamento_atual:      radio('faturamento_atual'),
-    ticket_medio:           radio('ticket_medio'),
-    num_clientes_ativos:    get('num_clientes_ativos'),
-    ciclo_venda:            get('ciclo_venda'),
-    canal_aquisicao:        radio('canal_aquisicao'),
-    dependencia_indicacao:  get('dependencia_indicacao'),
-    ja_prospectou_ativamente: toggleState.ja_prospectou_ativamente ?? null,
-    experiencia_prospeccao: get('experiencia_prospeccao'),
-    tem_vendedor:           toggleState.tem_vendedor ?? null,
-    num_vendedores:         get('num_vendedores'),
-    usa_crm:                toggleState.usa_crm ?? null,
-    qual_crm:               get('qual_crm'),
-    tem_script_venda:       toggleState.tem_script_venda ?? null,
-    tem_meta_mensal:        toggleState.tem_meta_mensal ?? null,
-    meta_mensal_valor:      get('meta_mensal_valor'),
-    processo_prospeccao:    radio('processo_prospeccao'),
-    taxa_conversao_estimada:get('taxa_conversao_estimada'),
-    maior_obstaculo:        radio('maior_obstaculo'),
-    onde_perde_venda:       radio('onde_perde_venda'),
-    meta_faturamento_90d:   get('meta_faturamento_90d'),
-    principal_expectativa:  get('principal_expectativa'),
+    nome_responsavel:            get('nome_responsavel'),
+    cargo_responsavel:           get('cargo_responsavel'),
+    whatsapp:                    get('whatsapp'),
+    segmento:                    get('segmento'),
+    principal_produto:           get('principal_produto'),
+    diferencial_percebido:       get('diferencial_percebido'),
+    faturamento_atual:           radio('faturamento_atual'),
+    ticket_medio:                radio('ticket_medio'),
+    num_clientes_ativos:         get('num_clientes_ativos'),
+    ciclo_venda:                 get('ciclo_venda'),
+    canal_aquisicao:             radio('canal_aquisicao'),
+    dependencia_indicacao:       get('dependencia_indicacao'),
+    ja_prospectou_ativamente:    toggleState.ja_prospectou_ativamente ?? null,
+    experiencia_prospeccao:      get('experiencia_prospeccao'),
+    tem_vendedor:                toggleState.tem_vendedor ?? null,
+    num_vendedores:              get('num_vendedores'),
+    usa_crm:                     toggleState.usa_crm ?? null,
+    qual_crm:                    get('qual_crm'),
+    tem_script_venda:            toggleState.tem_script_venda ?? null,
+    tem_meta_mensal:             toggleState.tem_meta_mensal ?? null,
+    meta_mensal_valor:           get('meta_mensal_valor'),
+    processo_prospeccao:         radio('processo_prospeccao'),
+    taxa_conversao_estimada:     get('taxa_conversao_estimada'),
+    maior_obstaculo:             radio('maior_obstaculo'),
+    onde_perde_venda:            radio('onde_perde_venda'),
+    meta_faturamento_90d:        get('meta_faturamento_90d'),
+    principal_expectativa:       get('principal_expectativa'),
     disponibilidade_implementacao: radio('disponibilidade_implementacao'),
-    origem: 'new_money_club',
     empresa_id: '11111111-1111-1111-1111-111111111111',
   };
 
-  // Calcular score
   const { score, breakdown, nivel } = calcScore(payload);
   payload.score = score;
   payload.score_breakdown = JSON.stringify(breakdown);
   payload.nivel = nivel;
-  payload.diagnostico_resumo = `Score ${score}/99 — ${nivel}. Maior obstáculo: ${payload.maior_obstaculo}. Origem: New Money Club.`;
+  payload.diagnostico_resumo = `Score ${score}/99 — ${nivel}. Obstáculo: ${payload.maior_obstaculo}. Canal: ${payload.canal_aquisicao}.`;
 
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>GERANDO PLANO...';
+  btn.innerHTML = '<span class="spinner"></span>ENVIANDO...';
 
-  // Salvar no Supabase
   try {
     await fetch(`${SB_URL}/rest/v1/diagnosticos_clientes`, {
       method: 'POST',
@@ -1286,18 +877,137 @@ document.getElementById('diag-form').addEventListener('submit', async (e) => {
       body: JSON.stringify(payload)
     });
   } catch(err) {
-    console.warn('Supabase: erro ao salvar (não bloqueia plano)', err);
+    console.warn('Supabase offline — salvando local', err);
+    // Salvar local como fallback
+    const local = JSON.parse(localStorage.getItem('pv_diags') || '[]');
+    local.push({ ...payload, created_at: new Date().toISOString() });
+    localStorage.setItem('pv_diags', JSON.stringify(local));
   }
 
-  // Gerar plano independente do Supabase
+  // Mostrar tela de confirmação
   document.getElementById('form-wrapper').style.display = 'none';
-  document.getElementById('plano-wrapper').style.display = 'block';
-  gerarPlano(payload, score, breakdown, nivel);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
+  mostrarObrigado(payload.nome_responsavel, '');
+  window.scrollTo({ top:0, behavior:'smooth' });
   btn.disabled = false;
-  btn.innerHTML = 'GERAR MEU PLANO DE AÇÃO →';
+  btn.innerHTML = 'ENVIAR →';
 });
+
+// ============================================================
+// ADMIN — CARREGAR LEADS
+// ============================================================
+async function carregarLeads() {
+  const list = document.getElementById('historico-list');
+  const sel = document.getElementById('select-lead');
+  let leads = [];
+
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/diagnosticos_clientes?select=id,nome_responsavel,whatsapp,segmento,faturamento_atual,score,nivel,maior_obstaculo,created_at&order=created_at.desc&limit=50`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    if (res.ok) leads = await res.json();
+  } catch(e) {}
+
+  // Fallback: localStorage
+  const local = JSON.parse(localStorage.getItem('pv_diags') || '[]');
+  if (local.length) leads = [...local, ...leads];
+
+  if (!leads.length) {
+    list.innerHTML = '<div class="historico-vazio">Nenhum diagnóstico enviado ainda.</div>';
+    return;
+  }
+
+  list.innerHTML = leads.map(l => `
+    <div class="historico-item" onclick="selecionarLead('${encodeURIComponent(l.nome_responsavel||'')}','${encodeURIComponent(l.whatsapp||'')}')">
+      <div>
+        <div class="historico-nome">${l.nome_responsavel || '—'}</div>
+        <div class="historico-meta">${l.segmento || '—'} · ${l.faturamento_atual || '—'} · ${l.whatsapp || ''}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="historico-score">${l.score || '—'}/99</div>
+        <div class="historico-meta">${l.nivel || ''}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Popular select
+  sel.innerHTML = '<option value="">Selecione um lead...</option>' +
+    leads.map(l => `<option value="${encodeURIComponent(l.nome_responsavel||'')}|${encodeURIComponent(l.whatsapp||'')}">${l.nome_responsavel} — ${l.whatsapp}</option>`).join('');
+}
+
+function selecionarLead(nome, whatsapp) {
+  switchTab('link');
+  const sel = document.getElementById('select-lead');
+  const key = nome + '|' + whatsapp;
+  for (let opt of sel.options) { if (opt.value === key) { opt.selected = true; break; } }
+}
+
+// ============================================================
+// ADMIN — FOTO
+// ============================================================
+let fotoBase64 = '';
+
+function handlePhotoUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    fotoBase64 = e.target.result;
+    const prev = document.getElementById('photo-preview');
+    prev.src = fotoBase64;
+    prev.classList.add('visible');
+    document.getElementById('photo-upload-text').textContent = file.name;
+    document.getElementById('photo-url-input').value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewPhotoURL(url) {
+  if (!url) return;
+  fotoBase64 = '';
+  const prev = document.getElementById('photo-preview');
+  prev.src = url;
+  prev.classList.add('visible');
+  document.getElementById('photo-upload-text').textContent = 'Foto via URL';
+}
+
+// ============================================================
+// ADMIN — GERAR LINK
+// ============================================================
+function gerarLink() {
+  const sel = document.getElementById('select-lead');
+  const val = sel.value;
+  if (!val) { alert('Selecione um lead primeiro.'); return; }
+
+  const [nomeEnc] = val.split('|');
+  const nome = decodeURIComponent(nomeEnc);
+  const fotoURL = document.getElementById('photo-url-input').value.trim() || fotoBase64;
+  const base = window.location.origin + window.location.pathname;
+  let link = `${base}?obrigado=1&nome=${encodeURIComponent(nome)}`;
+  if (fotoURL && !fotoURL.startsWith('data:')) {
+    link += `&foto=${encodeURIComponent(fotoURL)}`;
+  }
+
+  const el = document.getElementById('link-gerado');
+  el.textContent = link;
+  el.style.display = 'block';
+  document.getElementById('copy-hint').style.display = 'block';
+
+  el.onclick = () => {
+    navigator.clipboard.writeText(link).then(() => {
+      el.style.background = 'rgba(201,168,76,.2)';
+      setTimeout(() => el.style.background = '', 800);
+    });
+  };
+}
+
+// ============================================================
+// ADMIN — TABS
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='leads')||(i===1&&tab==='link')));
+  document.getElementById('tab-leads').classList.toggle('active', tab==='leads');
+  document.getElementById('tab-link').classList.toggle('active', tab==='link');
+}
 </script>
 </body>
 </html>

@@ -505,6 +505,16 @@ textarea{resize:vertical;min-height:80px;}
           <label class="field-label">Qual CRM / ferramenta?</label>
           <input type="text" id="qual_crm" placeholder="Ex: Hubspot, RD Station, planilha, Notion...">
         </div>
+        <div class="field conditional" id="cond-crm-uso">
+          <label class="field-label">O time usa de fato no dia a dia?</label>
+          <div class="toggle-row">
+            <div><div class="toggle-label-text">Uso real do CRM</div><div class="toggle-label-sub">Atualizado com consistência, não só quando lembram</div></div>
+            <div class="toggle-btns">
+              <button type="button" class="toggle-btn" onclick="setToggle('crm_usado_de_fato',true,this)">SIM</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('crm_usado_de_fato',false,this)">NÃO</button>
+            </div>
+          </div>
+        </div>
         <div class="field">
           <label class="field-label">Tem script ou roteiro de abordagem definido?</label>
           <div class="toggle-row">
@@ -512,6 +522,16 @@ textarea{resize:vertical;min-height:80px;}
             <div class="toggle-btns">
               <button type="button" class="toggle-btn" onclick="setToggle('tem_script_venda',true,this)">SIM</button>
               <button type="button" class="toggle-btn" onclick="setToggle('tem_script_venda',false,this)">NÃO</button>
+            </div>
+          </div>
+        </div>
+        <div class="field conditional" id="cond-script-seguindo">
+          <label class="field-label">Os vendedores estão seguindo o script?</label>
+          <div class="toggle-row">
+            <div><div class="toggle-label-text">Adoção do script pelo time</div><div class="toggle-label-sub">Na prática do dia a dia, não só no papel</div></div>
+            <div class="toggle-btns">
+              <button type="button" class="toggle-btn" onclick="setToggle('script_sendo_seguido',true,this)">SIM</button>
+              <button type="button" class="toggle-btn" onclick="setToggle('script_sendo_seguido',false,this)">NÃO</button>
             </div>
           </div>
         </div>
@@ -598,6 +618,10 @@ textarea{resize:vertical;min-height:80px;}
             <label class="opt-item"><input type="radio" name="disponibilidade_implementacao" value="10 a 20h/semana"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>10 a 20h/semana</strong></span></span></label>
             <label class="opt-item"><input type="radio" name="disponibilidade_implementacao" value="Mais de 20h/semana — comprometido 100%"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Mais de 20h/semana</strong><small>Comprometido 100%</small></span></span></label>
           </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Qual é o seu maior desejo com o negócio hoje?<span>*</span></label>
+          <textarea id="maior_desejo" placeholder="Se tudo der certo nos próximos 12 meses, o que muda na sua vida e no seu negócio?" required></textarea>
         </div>
       </div>
     </div>
@@ -757,8 +781,13 @@ function setToggle(field, val, btn) {
   const parent = btn.closest('.toggle-btns');
   parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active-sim','active-nao'));
   btn.classList.add(val ? 'active-sim' : 'active-nao');
-  const map = { ja_prospectou_ativamente:'cond-prospeccao', tem_vendedor:'cond-vendedores', usa_crm:'cond-crm', tem_meta_mensal:'cond-meta' };
+  const map = { ja_prospectou_ativamente:'cond-prospeccao', tem_vendedor:'cond-vendedores', usa_crm:'cond-crm', tem_meta_mensal:'cond-meta', tem_script_venda:'cond-script-seguindo' };
   if (map[field]) { const el = document.getElementById(map[field]); if (el) el.classList.toggle('show', val); }
+  // CRM uso real — só aparece quando usa_crm=true
+  if (field === 'usa_crm') {
+    const elUso = document.getElementById('cond-crm-uso');
+    if (elUso) elUso.classList.toggle('show', val);
+  }
 }
 
 // ============================================================
@@ -817,7 +846,7 @@ document.getElementById('diag-form').addEventListener('submit', async (e) => {
   const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
   const radio = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
 
-  if (!get('nome_responsavel') || !get('whatsapp') || !radio('faturamento_atual') || !radio('maior_obstaculo') || !get('principal_expectativa') || !get('principal_produto')) {
+  if (!get('nome_responsavel') || !get('whatsapp') || !radio('faturamento_atual') || !radio('maior_obstaculo') || !get('principal_expectativa') || !get('principal_produto') || !get('maior_desejo')) {
     errEl.textContent = 'Por favor, preencha os campos obrigatórios marcados com *.';
     errEl.style.display = 'block';
     window.scrollTo({ top:0, behavior:'smooth' });
@@ -853,6 +882,9 @@ document.getElementById('diag-form').addEventListener('submit', async (e) => {
     meta_faturamento_90d:        get('meta_faturamento_90d'),
     principal_expectativa:       get('principal_expectativa'),
     disponibilidade_implementacao: radio('disponibilidade_implementacao'),
+    script_sendo_seguido:          toggleState.script_sendo_seguido ?? null,
+    crm_usado_de_fato:             toggleState.crm_usado_de_fato ?? null,
+    maior_desejo:                  get('maior_desejo'),
     empresa_id: '11111111-1111-1111-1111-111111111111',
   };
 

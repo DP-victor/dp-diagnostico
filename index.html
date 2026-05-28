@@ -3,26 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagnóstico Inicial — Digital Pressure</title>
+<title>Diagnóstico New Money Club — Vitor & Pedro</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
+/* ============================================================
+   VARIÁVEIS & RESET
+   ============================================================ */
 :root {
   --gold: #C9A84C;
   --gold-light: #E2C068;
   --gold-dim: rgba(201,168,76,0.15);
+  --gold-border: rgba(201,168,76,0.25);
   --black: #080808;
   --surface: #111111;
   --surface2: #181818;
+  --surface3: #1e1e1e;
   --border: rgba(201,168,76,0.14);
   --border-hover: rgba(201,168,76,0.5);
   --text: #F2EEE4;
-  --muted: #666;
+  --muted: #777;
   --muted2: #444;
+  --red: #e05555;
+  --green: #4caf80;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--black);
   color: var(--text);
@@ -31,465 +37,390 @@ body {
   line-height: 1.6;
   min-height: 100vh;
 }
-
-/* grain */
 body::after {
   content: '';
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 999;
+  pointer-events: none; z-index: 999;
 }
 
-/* TOP BAR */
+/* ============================================================
+   TOP BAR & HEADER
+   ============================================================ */
 .topbar {
   height: 2px;
   background: linear-gradient(90deg, transparent 0%, var(--gold) 40%, var(--gold-light) 60%, transparent 100%);
 }
-
 header {
   padding: 24px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: rgba(8,8,8,0.95);
+  backdrop-filter: blur(12px);
+  z-index: 100;
 }
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
+.logo { display: flex; align-items: center; gap: 14px; }
 .logo-mark {
   width: 36px; height: 36px;
   background: var(--gold);
   display: flex; align-items: center; justify-content: center;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 16px;
-  color: var(--black);
-  letter-spacing: 1px;
-  flex-shrink: 0;
+  font-size: 16px; color: var(--black); letter-spacing: 1px; flex-shrink: 0;
 }
-
-.logo-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  letter-spacing: 3px;
-  color: var(--text);
-}
+.logo-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--text); }
 .logo-name span { color: var(--gold); }
+.header-right { text-align: right; }
+.header-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.7; display: block; }
+.header-sublabel { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
 
-.header-right {
-  text-align: right;
-}
-.header-label {
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.6;
-  display: block;
-}
-.header-sublabel {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 1px;
-}
+/* ============================================================
+   FORM WRAPPER
+   ============================================================ */
+.wrapper { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
 
-/* LAYOUT */
-.wrapper {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
-}
-
-/* INTRO */
-.intro {
-  padding: 56px 0 48px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 48px;
-}
-
+.intro { padding: 52px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
 .intro-tag {
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
+  display: inline-block;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
   color: var(--gold);
-  margin-bottom: 20px;
-  display: block;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  padding: 5px 14px; margin-bottom: 20px;
 }
-
 .intro h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(40px, 7vw, 68px);
-  line-height: 0.95;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
-  color: var(--text);
+  font-size: clamp(42px, 7vw, 68px);
+  letter-spacing: 2px; line-height: 1;
+  color: var(--text); margin-bottom: 16px;
 }
-
 .intro h1 em { color: var(--gold); font-style: normal; }
-
-.intro p {
-  font-size: 15px;
-  color: var(--muted);
-  font-weight: 300;
-  max-width: 540px;
-  line-height: 1.7;
-}
+.intro p { font-size: 15px; color: var(--muted); max-width: 540px; font-weight: 300; line-height: 1.7; }
 
 /* PROGRESS */
-.progress-wrap {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(8,8,8,0.95);
-  backdrop-filter: blur(12px);
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 48px;
-}
-
-.progress-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.progress-meta span:last-child { color: var(--gold); }
-
-.progress-track {
-  height: 1px;
-  background: var(--muted2);
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--gold);
-  transition: width 0.4s ease;
-}
+.progress-wrap { margin-bottom: 40px; }
+.progress-meta { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.progress-track { height: 2px; background: var(--surface2); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transition: width 0.4s ease; }
 
 /* BLOCOS */
 .bloco {
-  margin-bottom: 52px;
-}
-
-.bloco-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.bloco-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px;
-  line-height: 1;
-  color: var(--gold);
-  opacity: 0.25;
-  flex-shrink: 0;
-  margin-top: -4px;
-}
-
-.bloco-meta { flex: 1; }
-
-.bloco-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  letter-spacing: 1px;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-
-.bloco-desc {
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 300;
-}
-
-/* CAMPOS */
-.field-group { display: grid; gap: 16px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
-
-.field { display: flex; flex-direction: column; gap: 6px; }
-
-.field-label {
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 500;
-}
-
-.field-label span {
-  color: var(--gold);
-  margin-left: 2px;
-}
-
-input[type=text],
-input[type=tel],
-input[type=email],
-select,
-textarea {
   background: var(--surface);
   border: 1px solid var(--border);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.bloco:hover { border-color: var(--border-hover); }
+.bloco-header { display: flex; align-items: flex-start; gap: 20px; padding: 24px 28px 20px; border-bottom: 1px solid var(--border); }
+.bloco-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); opacity: 0.4; line-height: 1; flex-shrink: 0; }
+.bloco-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: var(--text); }
+.bloco-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.field-group { padding: 24px 28px; display: grid; gap: 20px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* FIELDS */
+.field { display: grid; gap: 8px; }
+.field-label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
+.field-label span { color: var(--red); }
+input[type="text"], input[type="tel"], select, textarea {
+  background: var(--surface2);
+  border: 1px solid var(--border);
   color: var(--text);
-  padding: 13px 16px;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
+  padding: 12px 14px;
   outline: none;
   width: 100%;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s;
   -webkit-appearance: none;
   appearance: none;
-  border-radius: 0;
 }
+input:focus, select:focus, textarea:focus { border-color: var(--gold); background: var(--surface3); }
+select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+select option { background: var(--surface2); }
+textarea { resize: vertical; min-height: 80px; }
 
-input:focus, select:focus, textarea:focus {
-  border-color: var(--gold);
-  background: #141414;
-}
-
-input::placeholder, textarea::placeholder { color: var(--muted2); }
-
-select {
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 38px;
-}
-
-select option { background: #111; color: var(--text); }
-
-textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
-
-/* OPÇÕES VISUAIS (radio/check estilizados) */
-.options-list {
-  display: grid;
-  gap: 8px;
-}
-
+/* OPTIONS LIST */
+.options-list { display: grid; gap: 8px; }
 .options-list.cols-2 { grid-template-columns: 1fr 1fr; }
-@media (max-width: 480px) { .options-list.cols-2 { grid-template-columns: 1fr; } }
-
-.opt-item {
-  position: relative;
-  cursor: pointer;
-}
-
-.opt-item input { position: absolute; opacity: 0; width: 0; height: 0; }
-
+.opt-item { cursor: pointer; }
+.opt-item input { display: none; }
 .opt-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 16px;
-  background: var(--surface);
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface2);
   border: 1px solid var(--border);
-  cursor: pointer;
-  transition: all 0.15s;
-  font-size: 14px;
-  color: var(--text);
-  user-select: none;
+  transition: all 0.15s; cursor: pointer;
 }
-
-.opt-label:hover { border-color: var(--border-hover); }
-
 .opt-item input:checked + .opt-label {
-  border-color: var(--gold);
   background: var(--gold-dim);
-  color: var(--text);
+  border-color: var(--gold);
 }
-
 .opt-dot {
-  width: 16px; height: 16px;
+  width: 8px; height: 8px;
   border: 1px solid var(--muted2);
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; flex-shrink: 0;
   transition: all 0.15s;
 }
-
 .opt-item input:checked + .opt-label .opt-dot {
-  background: var(--gold);
-  border-color: var(--gold);
+  background: var(--gold); border-color: var(--gold);
 }
+.opt-text { display: flex; flex-direction: column; }
+.opt-text strong { font-size: 13px; font-weight: 500; color: var(--text); }
+.opt-text small { font-size: 11px; color: var(--muted); margin-top: 1px; }
 
-.opt-item input:checked + .opt-label .opt-dot::after {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--black);
-}
-
-.opt-text strong { display: block; font-size: 14px; font-weight: 500; }
-.opt-text small { color: var(--muted); font-size: 12px; font-weight: 300; }
-
-/* TOGGLE SIM/NÃO */
-.toggle-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-
-.toggle-label-text { font-size: 14px; color: var(--text); }
-.toggle-label-sub { font-size: 12px; color: var(--muted); font-weight: 300; }
-
-.toggle-btns { display: flex; gap: 6px; }
-
+/* TOGGLE */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; background: var(--surface2); border: 1px solid var(--border); }
+.toggle-label-text { font-size: 13px; font-weight: 500; }
+.toggle-label-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.toggle-btns { display: flex; gap: 6px; flex-shrink: 0; }
 .toggle-btn {
-  padding: 6px 18px;
-  background: transparent;
-  border: 1px solid var(--muted2);
-  color: var(--muted);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 14px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.15s;
+  padding: 6px 18px; font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px; letter-spacing: 1px;
+  background: transparent; border: 1px solid var(--muted2);
+  color: var(--muted); cursor: pointer; transition: all 0.15s;
 }
+.toggle-btn:hover { border-color: var(--gold); color: var(--gold); }
+.toggle-btn.active-sim { background: var(--gold); border-color: var(--gold); color: var(--black); }
+.toggle-btn.active-nao { background: var(--surface3); border-color: var(--red); color: var(--red); }
 
-.toggle-btn.active-sim {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--black);
-}
-
-.toggle-btn.active-nao {
-  background: var(--muted2);
-  border-color: var(--muted2);
-  color: var(--text);
-}
-
-/* DIVIDER */
-.sep {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 40px 0;
-}
+/* SEP */
+.sep { display: flex; align-items: center; gap: 16px; margin: 32px 0 20px; }
 .sep-line { flex: 1; height: 1px; background: var(--border); }
-.sep-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); white-space: nowrap; opacity: 0.6; }
+.sep-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 
-/* SUBMIT */
-.submit-area {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 36px;
-  text-align: center;
-  margin-top: 48px;
-}
-
-.submit-area h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  letter-spacing: 2px;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-
-.submit-area p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 28px;
-  font-weight: 300;
-}
-
-.btn-submit {
-  background: var(--gold);
-  color: var(--black);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  letter-spacing: 3px;
-  padding: 16px 56px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-  max-width: 380px;
-}
-
-.btn-submit:hover { background: var(--gold-light); }
-.btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* OBRIGADO */
-#obrigado {
-  display: none;
-  min-height: 80vh;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  padding: 60px 24px;
-}
-
-.obrigado-icon {
-  width: 64px; height: 64px;
-  border: 2px solid var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px;
-  margin: 0 auto 28px;
-  animation: pulse 2s ease infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.3); }
-  50% { box-shadow: 0 0 0 12px rgba(201,168,76,0); }
-}
-
-.obrigado-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(36px, 6vw, 58px);
-  letter-spacing: 2px;
-  color: var(--text);
-  margin-bottom: 12px;
-  line-height: 1;
-}
-
-.obrigado-title em { color: var(--gold); font-style: normal; }
-
-.obrigado-sub {
-  font-size: 15px;
-  color: var(--muted);
-  max-width: 440px;
-  font-weight: 300;
-  line-height: 1.7;
-}
-
-/* LOADING */
-.btn-submit .spinner {
-  display: inline-block;
-  width: 14px; height: 14px;
-  border: 2px solid rgba(0,0,0,0.3);
-  border-top-color: var(--black);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* CONDITIONAL SHOW */
+/* CONDITIONAL */
 .conditional { display: none; }
 .conditional.show { display: grid; }
+
+/* SUBMIT */
+.submit-area { padding: 40px 28px; text-align: center; background: var(--surface); border: 1px solid var(--border); margin-top: 8px; }
+.submit-area h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--text); margin-bottom: 8px; }
+.submit-area p { font-size: 13px; color: var(--muted); margin-bottom: 28px; font-weight: 300; }
+.btn-submit {
+  background: var(--gold); color: var(--black);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 3px;
+  padding: 16px 56px; border: none; cursor: pointer;
+  transition: all 0.2s; width: 100%; max-width: 380px;
+}
+.btn-submit:hover { background: var(--gold-light); }
+.btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.spinner {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid rgba(0,0,0,0.3); border-top-color: var(--black);
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+  vertical-align: middle; margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#error-msg { color: var(--red); font-size: 13px; margin-top: 14px; display: none; }
 
 @media (max-width: 600px) {
   header { padding: 18px 20px; }
   .wrapper { padding: 0 16px 60px; }
   .intro { padding: 36px 0 32px; }
+  .field-row { grid-template-columns: 1fr; }
+  .options-list.cols-2 { grid-template-columns: 1fr; }
   .submit-area { padding: 24px 20px; }
+}
+
+/* ============================================================
+   PLANO DE AÇÃO — TELA DE RESULTADO
+   ============================================================ */
+#plano-wrapper {
+  display: none;
+  animation: fadeIn 0.6s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* Download bar */
+.download-bar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(8,8,8,0.97);
+  border-bottom: 1px solid var(--gold-border);
+  padding: 14px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(16px);
+}
+.download-bar-info { font-size: 12px; color: var(--muted); }
+.download-bar-info strong { color: var(--gold); }
+.btn-download {
+  background: var(--gold); color: var(--black);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px; letter-spacing: 2px;
+  padding: 10px 32px; border: none; cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+}
+.btn-download:hover { background: var(--gold-light); }
+.btn-download:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Plano hero */
+.plano-hero {
+  padding: 64px 48px 52px;
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.plano-hero::before {
+  content: '';
+  position: absolute; top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.plano-tag {
+  display: inline-block;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  padding: 5px 14px; margin-bottom: 24px;
+}
+.plano-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(38px, 5vw, 62px);
+  letter-spacing: 2px; line-height: 1.05;
+  color: var(--text); max-width: 800px; margin-bottom: 18px;
+}
+.plano-hero h1 em { color: var(--gold); font-style: normal; }
+.plano-hero-sub { font-size: 15px; color: var(--muted); max-width: 580px; margin-bottom: 36px; font-weight: 300; }
+.hero-pills { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 14px 22px; min-width: 140px;
+}
+.hero-pill .pval { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); letter-spacing: 1px; line-height: 1; }
+.hero-pill .plbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+
+/* Plano body */
+.plano-body { max-width: 1000px; margin: 0 auto; padding: 0 48px 80px; }
+.sec-sep { display: flex; align-items: center; gap: 16px; margin: 48px 0 28px; }
+.sec-sep-line { flex: 1; height: 1px; background: var(--border); }
+.sec-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.6; white-space: nowrap; }
+.sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1.5px; color: var(--text); margin-bottom: 20px; }
+
+/* Score */
+.score-section { background: var(--surface); border: 1px solid var(--border); padding: 28px; margin-bottom: 24px; }
+.score-flex { display: flex; align-items: flex-start; gap: 28px; margin-bottom: 24px; }
+.score-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: var(--gold); line-height: 1; flex-shrink: 0; }
+.score-num span { font-size: 28px; color: var(--muted); }
+.score-insight { font-size: 14px; color: var(--muted); line-height: 1.7; padding-top: 8px; }
+.score-bars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.bar-item { text-align: center; }
+.bar-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.bar-track { height: 4px; background: var(--surface2); border-radius: 2px; margin-bottom: 4px; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 2px; transition: width 1s ease; }
+.bar-val { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--gold); }
+
+/* Diag cards */
+.diag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.diag-card { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; }
+.diag-card .dlbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+.diag-card .dval { font-size: 13px; color: var(--text); font-weight: 500; }
+.dval.ok { color: var(--green); }
+.dval.warn { color: var(--gold); }
+.dval.danger { color: var(--red); }
+
+/* Gargalos */
+.gargalo {
+  display: flex; gap: 18px;
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 20px 22px; margin-bottom: 10px;
+  border-left: 3px solid var(--gold);
+}
+.gargalo-icon { font-size: 22px; flex-shrink: 0; line-height: 1.4; }
+.gargalo-title { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+.gargalo-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* Fases */
+.fase {
+  background: var(--surface); border: 1px solid var(--border);
+  margin-bottom: 12px; overflow: hidden;
+}
+.fase-header {
+  display: flex; align-items: center; gap: 20px;
+  padding: 20px 24px; border-bottom: 1px solid var(--border);
+}
+.fase-num { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: var(--gold); opacity: 0.35; line-height: 1; flex-shrink: 0; }
+.fase-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1.5px; }
+.fase-period { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.fase-tag {
+  margin-left: auto;
+  background: var(--gold-dim); border: 1px solid var(--gold-border);
+  color: var(--gold); font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; padding: 4px 12px; flex-shrink: 0;
+}
+.fase-body { padding: 20px 24px; }
+.action-list { list-style: none; display: grid; gap: 12px; }
+.action-item { display: flex; gap: 14px; }
+.action-dot {
+  width: 26px; height: 26px; flex-shrink: 0;
+  background: var(--gold-dim); border: 1px solid var(--gold-border);
+  color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+.action-title { font-weight: 600; font-size: 13px; color: var(--text); margin-bottom: 3px; }
+.action-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* Canais */
+.channels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.channel-card {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 18px 20px; position: relative; overflow: hidden;
+}
+.channel-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+.channel-card.p1::after { background: var(--gold); }
+.channel-card.p2::after { background: #a78bfa; }
+.channel-card.p3::after { background: #4caf80; }
+.ch-priority { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
+.ch-name { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px; color: var(--text); margin-bottom: 6px; }
+.ch-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* Tabela de meta */
+.meta-table { width: 100%; border-collapse: collapse; }
+.meta-table thead tr { border-bottom: 1px solid var(--border); }
+.meta-table th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); padding: 12px 16px; font-weight: 500; }
+.meta-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+.meta-table tr:last-child td { border-bottom: none; }
+.meta-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+.badge-green { background: rgba(76,175,128,0.1); color: #4caf80; border: 1px solid rgba(76,175,128,0.3); }
+
+/* CTA final */
+.cta-block {
+  background: var(--surface); border: 1px solid var(--gold-border);
+  padding: 40px; text-align: center; margin-top: 48px;
+}
+.cta-block h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--text); margin-bottom: 10px; }
+.cta-block p { color: var(--muted); font-size: 14px; max-width: 480px; margin: 0 auto 24px; }
+.cta-btn {
+  display: inline-block;
+  background: var(--gold); color: var(--black);
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 700; font-size: 16px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 40px; border: none; cursor: pointer; text-decoration: none;
+  transition: opacity 0.2s;
+}
+.cta-btn:hover { opacity: 0.85; }
+
+/* Footer plano */
+.plano-footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.plano-footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--muted); }
+.plano-footer-logo span { color: var(--gold); }
+.plano-footer-note { font-size: 11px; color: var(--muted); }
+
+@media (max-width: 700px) {
+  .plano-hero, .plano-body, .plano-footer { padding-left: 20px; padding-right: 20px; }
+  .score-flex { flex-direction: column; gap: 16px; }
+  .score-bars { grid-template-columns: repeat(3, 1fr); }
+  .download-bar { padding: 12px 20px; gap: 12px; }
+  .download-bar-info { font-size: 11px; }
 }
 </style>
 </head>
@@ -497,23 +428,29 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
 
 <div class="topbar"></div>
 
+<!-- =========================================================
+     HEADER FIXO
+     ========================================================= -->
 <header>
   <div class="logo">
-    <div class="logo-mark">DP</div>
-    <span class="logo-name">DIGITAL <span>PRESSURE</span></span>
+    <div class="logo-mark">VP</div>
+    <span class="logo-name">VITOR & <span>PEDRO</span></span>
   </div>
   <div class="header-right">
-    <span class="header-label">Diagnóstico Inicial</span>
-    <span class="header-sublabel">Confidencial · Uso interno</span>
+    <span class="header-label">New Money Club</span>
+    <span class="header-sublabel">Diagnóstico Comercial · CAC Zero</span>
   </div>
 </header>
 
+<!-- =========================================================
+     FORMULÁRIO DE DIAGNÓSTICO
+     ========================================================= -->
 <div class="wrapper" id="form-wrapper">
 
   <div class="intro">
-    <span class="intro-tag">Passo 1 de 1 — Diagnóstico Operacional</span>
+    <span class="intro-tag">Diagnóstico Exclusivo · New Money Club</span>
     <h1>Vamos Entender<br>o Seu <em>Negócio.</em></h1>
-    <p>Este diagnóstico é o ponto de partida da nossa operação juntos. Responda com a maior precisão possível — cada detalhe aqui define o que vamos priorizar nas próximas semanas.</p>
+    <p>Este diagnóstico é gratuito para membros do New Money Club. Com base nas suas respostas, geramos um plano de ação personalizado — pronto para você baixar e já começar a executar.</p>
   </div>
 
   <div class="progress-wrap" id="progress-wrap">
@@ -528,7 +465,7 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
 
   <form id="diag-form" novalidate>
 
-    <!-- ===================== BLOCO 1: IDENTIFICAÇÃO ===================== -->
+    <!-- BLOCO 1 -->
     <div class="bloco" data-bloco="1">
       <div class="bloco-header">
         <div class="bloco-num">01</div>
@@ -537,7 +474,6 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
           <div class="bloco-desc">Quem é você e qual é o seu negócio.</div>
         </div>
       </div>
-
       <div class="field-group">
         <div class="field-row">
           <div class="field">
@@ -545,8 +481,8 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <input type="text" id="nome_responsavel" placeholder="Nome completo" required>
           </div>
           <div class="field">
-            <label class="field-label">Cargo / Função<span>*</span></label>
-            <input type="text" id="cargo_responsavel" placeholder="Ex: CEO, Sócio, Gerente...">
+            <label class="field-label">Cargo / Função</label>
+            <input type="text" id="cargo_responsavel" placeholder="Ex: CEO, Sócio, Fundador...">
           </div>
         </div>
         <div class="field-row">
@@ -555,7 +491,7 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <input type="tel" id="whatsapp" placeholder="(11) 99999-9999" required>
           </div>
           <div class="field">
-            <label class="field-label">Segmento de atuação<span>*</span></label>
+            <label class="field-label">Segmento de atuação</label>
             <select id="segmento">
               <option value="">Selecione...</option>
               <option>Contabilidade / Tributário</option>
@@ -572,28 +508,27 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
           </div>
         </div>
         <div class="field">
-          <label class="field-label">Produto / Serviço principal que você vende<span>*</span></label>
-          <input type="text" id="principal_produto" placeholder="Descreva em uma linha o que você entrega ao cliente">
+          <label class="field-label">Produto / Serviço principal<span>*</span></label>
+          <input type="text" id="principal_produto" placeholder="O que você entrega ao cliente?" required>
         </div>
         <div class="field">
-          <label class="field-label">O que você acredita que te diferencia da concorrência hoje?</label>
-          <textarea id="diferencial_percebido" placeholder="Seja direto. O que faz um cliente escolher você e não o concorrente?"></textarea>
+          <label class="field-label">Seu diferencial percebido hoje</label>
+          <textarea id="diferencial_percebido" placeholder="O que faz um cliente escolher você?"></textarea>
         </div>
       </div>
     </div>
 
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Situação Comercial</div><div class="sep-line"></div></div>
 
-    <!-- ===================== BLOCO 2: NÚMEROS ===================== -->
+    <!-- BLOCO 2 -->
     <div class="bloco" data-bloco="2">
       <div class="bloco-header">
         <div class="bloco-num">02</div>
         <div class="bloco-meta">
           <div class="bloco-title">Números Atuais</div>
-          <div class="bloco-desc">A fotografia real da operação hoje. Sem julgamentos.</div>
+          <div class="bloco-desc">A fotografia real da operação hoje.</div>
         </div>
       </div>
-
       <div class="field-group">
         <div class="field">
           <label class="field-label">Faturamento mensal atual<span>*</span></label>
@@ -604,9 +539,8 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <label class="opt-item"><input type="radio" name="faturamento_atual" value="Acima de R$80K/mês"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Acima de R$ 80K/mês</strong><small>Escala</small></span></span></label>
           </div>
         </div>
-
         <div class="field">
-          <label class="field-label">Ticket médio por cliente (contrato ou mensalidade)<span>*</span></label>
+          <label class="field-label">Ticket médio por cliente</label>
           <div class="options-list cols-2">
             <label class="opt-item"><input type="radio" name="ticket_medio" value="Até R$1.500"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Até R$ 1.500</strong></span></span></label>
             <label class="opt-item"><input type="radio" name="ticket_medio" value="R$1.500–R$5.000"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>R$ 1.500 – R$ 5.000</strong></span></span></label>
@@ -614,10 +548,9 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <label class="opt-item"><input type="radio" name="ticket_medio" value="Acima de R$15.000"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Acima de R$ 15.000</strong></span></span></label>
           </div>
         </div>
-
         <div class="field-row">
           <div class="field">
-            <label class="field-label">Quantos clientes ativos você tem hoje?</label>
+            <label class="field-label">Clientes ativos hoje</label>
             <select id="num_clientes_ativos">
               <option value="">Selecione...</option>
               <option>Menos de 5</option>
@@ -628,7 +561,7 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             </select>
           </div>
           <div class="field">
-            <label class="field-label">Quanto tempo leva do primeiro contato ao fechamento?</label>
+            <label class="field-label">Ciclo médio de venda</label>
             <select id="ciclo_venda">
               <option value="">Selecione...</option>
               <option>Menos de 1 semana</option>
@@ -644,7 +577,7 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
 
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Aquisição de Clientes</div><div class="sep-line"></div></div>
 
-    <!-- ===================== BLOCO 3: AQUISIÇÃO ===================== -->
+    <!-- BLOCO 3 -->
     <div class="bloco" data-bloco="3">
       <div class="bloco-header">
         <div class="bloco-num">03</div>
@@ -653,7 +586,6 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
           <div class="bloco-desc">De onde vem o dinheiro — e quanto isso custa.</div>
         </div>
       </div>
-
       <div class="field-group">
         <div class="field">
           <label class="field-label">Principal canal de aquisição hoje<span>*</span></label>
@@ -662,13 +594,12 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <label class="opt-item"><input type="radio" name="canal_aquisicao" value="Tráfego pago (Meta/Google)"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Tráfego pago (Meta / Google Ads)</strong><small>Funciona mas caro e dependente</small></span></span></label>
             <label class="opt-item"><input type="radio" name="canal_aquisicao" value="Conteúdo orgânico / redes sociais"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Conteúdo orgânico / redes sociais</strong><small>Demorado, sem controle de volume</small></span></span></label>
             <label class="opt-item"><input type="radio" name="canal_aquisicao" value="Prospecção ativa (eu abordo)"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Prospecção ativa (eu abordo direto)</strong><small>Tenho controle mas sem processo definido</small></span></span></label>
-            <label class="opt-item"><input type="radio" name="canal_aquisicao" value="Parceiros / canais"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Parceiros / canais (contador, RH, etc.)</strong><small>Indireto, depende de terceiros</small></span></span></label>
+            <label class="opt-item"><input type="radio" name="canal_aquisicao" value="Parceiros / canais"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Parceiros / canais</strong><small>Indireto, depende de terceiros</small></span></span></label>
             <label class="opt-item"><input type="radio" name="canal_aquisicao" value="Misto / sem definição clara"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Misto / sem definição clara</strong></span></span></label>
           </div>
         </div>
-
         <div class="field">
-          <label class="field-label">Qual % estimado dos seus clientes vem por indicação?</label>
+          <label class="field-label">% estimado dos clientes que vem por indicação</label>
           <select id="dependencia_indicacao">
             <option value="">Selecione...</option>
             <option>Menos de 20%</option>
@@ -678,13 +609,12 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <option>Mais de 80% — quase tudo é indicação</option>
           </select>
         </div>
-
         <div class="field">
-          <label class="field-label">Você já fez prospecção ativa de forma estruturada?</label>
+          <label class="field-label">Já fez prospecção ativa de forma estruturada?</label>
           <div class="toggle-row">
             <div>
               <div class="toggle-label-text">Já prospectou ativamente</div>
-              <div class="toggle-label-sub">LinkedIn, e-mail, WhatsApp, cold call...</div>
+              <div class="toggle-label-sub">LinkedIn, WhatsApp, cold call...</div>
             </div>
             <div class="toggle-btns">
               <button type="button" class="toggle-btn" onclick="setToggle('ja_prospectou_ativamente', true, this)">SIM</button>
@@ -692,17 +622,16 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             </div>
           </div>
         </div>
-
         <div class="field conditional" id="cond-prospeccao">
-          <label class="field-label">Como foi essa experiência? Que canais usou e quais resultados teve?</label>
-          <textarea id="experiencia_prospeccao" placeholder="Descreva brevemente o que tentou e o que aconteceu..."></textarea>
+          <label class="field-label">Como foi essa experiência?</label>
+          <textarea id="experiencia_prospeccao" placeholder="Que canais usou e quais resultados teve?"></textarea>
         </div>
       </div>
     </div>
 
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Estrutura Comercial</div><div class="sep-line"></div></div>
 
-    <!-- ===================== BLOCO 4: ESTRUTURA ===================== -->
+    <!-- BLOCO 4 -->
     <div class="bloco" data-bloco="4">
       <div class="bloco-header">
         <div class="bloco-num">04</div>
@@ -711,14 +640,13 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
           <div class="bloco-desc">O que existe hoje — e o que precisa ser construído.</div>
         </div>
       </div>
-
       <div class="field-group">
         <div class="field">
-          <label class="field-label">Tem vendedor(es) dedicado(s) à função comercial?</label>
+          <label class="field-label">Tem vendedor(es) dedicado(s)?</label>
           <div class="toggle-row">
             <div>
               <div class="toggle-label-text">Vendedor dedicado</div>
-              <div class="toggle-label-sub">Exclusivamente para vendas, não o fundador fazendo tudo</div>
+              <div class="toggle-label-sub">Exclusivamente para vendas, não o fundador</div>
             </div>
             <div class="toggle-btns">
               <button type="button" class="toggle-btn" onclick="setToggle('tem_vendedor', true, this)">SIM</button>
@@ -726,7 +654,6 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             </div>
           </div>
         </div>
-
         <div class="field conditional" id="cond-vendedores">
           <label class="field-label">Quantos vendedores?</label>
           <select id="num_vendedores">
@@ -737,9 +664,8 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <option>Mais de 6</option>
           </select>
         </div>
-
         <div class="field">
-          <label class="field-label">Usa algum CRM ou ferramenta para controlar os leads?</label>
+          <label class="field-label">Usa CRM ou ferramenta para controlar leads?</label>
           <div class="toggle-row">
             <div>
               <div class="toggle-label-text">Usa CRM</div>
@@ -751,18 +677,16 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             </div>
           </div>
         </div>
-
         <div class="field conditional" id="cond-crm">
           <label class="field-label">Qual CRM / ferramenta?</label>
           <input type="text" id="qual_crm" placeholder="Ex: Hubspot, RD Station, planilha, Notion...">
         </div>
-
         <div class="field">
           <label class="field-label">Tem script ou roteiro de abordagem definido?</label>
           <div class="toggle-row">
             <div>
               <div class="toggle-label-text">Script de venda</div>
-              <div class="toggle-label-sub">Sequência clara do que falar do primeiro contato ao fechamento</div>
+              <div class="toggle-label-sub">Sequência clara do primeiro contato ao fechamento</div>
             </div>
             <div class="toggle-btns">
               <button type="button" class="toggle-btn" onclick="setToggle('tem_script_venda', true, this)">SIM</button>
@@ -770,9 +694,8 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             </div>
           </div>
         </div>
-
         <div class="field">
-          <label class="field-label">Tem meta de vendas/faturamento definida mensalmente?</label>
+          <label class="field-label">Tem meta de vendas definida mensalmente?</label>
           <div class="toggle-row">
             <div>
               <div class="toggle-label-text">Meta mensal definida</div>
@@ -784,12 +707,10 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             </div>
           </div>
         </div>
-
         <div class="field conditional" id="cond-meta">
-          <label class="field-label">Qual é sua meta mensal de faturamento?</label>
+          <label class="field-label">Qual é sua meta mensal?</label>
           <input type="text" id="meta_mensal_valor" placeholder="Ex: R$ 50.000/mês">
         </div>
-
         <div class="field">
           <label class="field-label">Como você descreve seu processo de prospecção hoje?</label>
           <div class="options-list">
@@ -799,9 +720,8 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
             <label class="opt-item"><input type="radio" name="processo_prospeccao" value="Processo estruturado — executo diariamente"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Processo estruturado</strong><small>Executo diariamente mas quero escalar</small></span></span></label>
           </div>
         </div>
-
         <div class="field">
-          <label class="field-label">Estimativa de taxa de conversão (leads em reunião → fechamento)</label>
+          <label class="field-label">Taxa de conversão estimada (reunião → fechamento)</label>
           <select id="taxa_conversao_estimada">
             <option value="">Selecione...</option>
             <option>Menos de 10%</option>
@@ -817,7 +737,7 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
 
     <div class="sep"><div class="sep-line"></div><div class="sep-text">Gargalos e Expectativas</div><div class="sep-line"></div></div>
 
-    <!-- ===================== BLOCO 5: GARGALOS ===================== -->
+    <!-- BLOCO 5 -->
     <div class="bloco" data-bloco="5">
       <div class="bloco-header">
         <div class="bloco-num">05</div>
@@ -826,42 +746,37 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
           <div class="bloco-desc">O diagnóstico honesto define o plano de ataque.</div>
         </div>
       </div>
-
       <div class="field-group">
         <div class="field">
           <label class="field-label">Seu maior obstáculo para crescer hoje<span>*</span></label>
           <div class="options-list">
-            <label class="opt-item"><input type="radio" name="maior_obstaculo" value="Não tenho leads suficientes chegando"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Não tenho leads suficientes</strong><small>Falta volume de oportunidades entrando no funil</small></span></span></label>
+            <label class="opt-item"><input type="radio" name="maior_obstaculo" value="Não tenho leads suficientes chegando"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Não tenho leads suficientes</strong><small>Falta volume de oportunidades no funil</small></span></span></label>
             <label class="opt-item"><input type="radio" name="maior_obstaculo" value="Leads chegam mas não fecham"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Leads chegam mas não fecham</strong><small>Conversão baixa, perco na negociação</small></span></span></label>
             <label class="opt-item"><input type="radio" name="maior_obstaculo" value="Dependo de tráfego pago para vender"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Dependo de tráfego pago</strong><small>Quando paro de investir, as vendas somem</small></span></span></label>
             <label class="opt-item"><input type="radio" name="maior_obstaculo" value="Não tenho previsibilidade — não sei o que vou faturar"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Não tenho previsibilidade</strong><small>Não consigo projetar o próximo mês</small></span></span></label>
             <label class="opt-item"><input type="radio" name="maior_obstaculo" value="Não tenho tempo / estrutura para prospectar"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Falta tempo / estrutura para prospectar</strong><small>Estou na operação e não consigo sair para vender</small></span></span></label>
           </div>
         </div>
-
         <div class="field">
-          <label class="field-label">Onde você percebe que perde mais negócios no funil?</label>
+          <label class="field-label">Onde você perde mais negócios no funil?</label>
           <div class="options-list">
-            <label class="opt-item"><input type="radio" name="onde_perde_venda" value="Na abordagem inicial — não geram resposta"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Na abordagem inicial</strong><small>Mando mensagem / e-mail e não gero resposta</small></span></span></label>
-            <label class="opt-item"><input type="radio" name="onde_perde_venda" value="No agendamento — não consigo marcar reunião"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>No agendamento</strong><small>Dificuldade de marcar a reunião / diagnóstico</small></span></span></label>
+            <label class="opt-item"><input type="radio" name="onde_perde_venda" value="Na abordagem inicial — não geram resposta"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Na abordagem inicial</strong><small>Mando mensagem e não gero resposta</small></span></span></label>
+            <label class="opt-item"><input type="radio" name="onde_perde_venda" value="No agendamento — não consigo marcar reunião"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>No agendamento</strong><small>Dificuldade de marcar a reunião</small></span></span></label>
             <label class="opt-item"><input type="radio" name="onde_perde_venda" value="Na reunião — não consigo apresentar valor"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Na reunião</strong><small>A conversa não converte em proposta</small></span></span></label>
             <label class="opt-item"><input type="radio" name="onde_perde_venda" value="Na proposta — preço vira objeção"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Na proposta</strong><small>Preço vira objeção, cliente some</small></span></span></label>
             <label class="opt-item"><input type="radio" name="onde_perde_venda" value="No follow-up — esqueço ou desisto cedo"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>No follow-up</strong><small>Não tenho cadência de acompanhamento</small></span></span></label>
           </div>
         </div>
-
         <div class="field">
-          <label class="field-label">Qual é sua meta de faturamento nos próximos 90 dias?</label>
-          <input type="text" id="meta_faturamento_90d" placeholder="Ex: R$ 50.000/mês, dobrar o atual...">
+          <label class="field-label">Meta de faturamento nos próximos 90 dias</label>
+          <input type="text" id="meta_faturamento_90d" placeholder="Ex: R$ 100.000/mês, dobrar o faturamento...">
         </div>
-
         <div class="field">
-          <label class="field-label">O que você espera que a Digital Pressure entregue para você?<span>*</span></label>
-          <textarea id="principal_expectativa" placeholder="Seja específico. Qual resultado muda o jogo no seu negócio nos próximos 3 meses?"></textarea>
+          <label class="field-label">O que precisa mudar para você chegar lá?<span>*</span></label>
+          <textarea id="principal_expectativa" placeholder="Seja específico. Qual resultado muda o jogo no seu negócio nos próximos 3 meses?" required></textarea>
         </div>
-
         <div class="field">
-          <label class="field-label">Quantas horas por semana você consegue dedicar à implementação do método?</label>
+          <label class="field-label">Horas por semana disponíveis para implementar o método</label>
           <div class="options-list cols-2">
             <label class="opt-item"><input type="radio" name="disponibilidade_implementacao" value="Menos de 5h/semana"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>Menos de 5h/semana</strong></span></span></label>
             <label class="opt-item"><input type="radio" name="disponibilidade_implementacao" value="5 a 10h/semana"><span class="opt-label"><span class="opt-dot"></span><span class="opt-text"><strong>5 a 10h/semana</strong></span></span></label>
@@ -875,165 +790,440 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
     <!-- SUBMIT -->
     <div class="submit-area">
       <h3>Tudo Pronto.</h3>
-      <p>Suas respostas serão analisadas pela equipe Digital Pressure e usadas para montar seu plano personalizado.</p>
-      <button type="submit" class="btn-submit" id="btn-submit">ENVIAR DIAGNÓSTICO →</button>
-      <div id="error-msg" style="color:#e05555;font-size:13px;margin-top:14px;display:none;"></div>
+      <p>Suas respostas geram um plano de ação personalizado — já pronto para baixar e levar para a call.</p>
+      <button type="submit" class="btn-submit" id="btn-submit">GERAR MEU PLANO DE AÇÃO →</button>
+      <div id="error-msg"></div>
     </div>
 
   </form>
-</div>
+</div><!-- /form-wrapper -->
 
-<!-- OBRIGADO -->
-<div id="obrigado" style="display:none; min-height:80vh; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:60px 24px;">
-  <div class="obrigado-icon">✓</div>
-  <div class="obrigado-title">Diagnóstico<br><em>Recebido.</em></div>
-  <p class="obrigado-sub" style="margin-top:16px;">Sua equipe Digital Pressure já tem acesso às suas respostas e vai entrar em contato em breve para alinhar os próximos passos.</p>
-</div>
+<!-- =========================================================
+     PLANO DE AÇÃO — RESULTADO AUTOMÁTICO
+     ========================================================= -->
+<div id="plano-wrapper">
+
+  <!-- Barra de download fixa -->
+  <div class="download-bar">
+    <div class="download-bar-info">
+      Plano gerado para <strong id="dl-nome">—</strong> · <strong id="dl-data">—</strong>
+    </div>
+    <button class="btn-download" id="btn-baixar" onclick="baixarPDF()">
+      ⬇ BAIXAR PLANO PDF
+    </button>
+  </div>
+
+  <!-- Conteúdo do plano (será capturado pelo html2pdf) -->
+  <div id="plano-conteudo">
+
+    <!-- Hero -->
+    <div class="plano-hero">
+      <div class="plano-tag" id="p-tag">Plano de Captação Ativa · 90 dias</div>
+      <h1 id="p-titulo">De onde você está para <em id="p-meta-titulo">sua meta</em> com estrutura e método.</h1>
+      <p class="plano-hero-sub" id="p-sub">Diagnóstico completo + estratégia de prospecção ativa CAC Zero para destravar seu crescimento comercial.</p>
+      <div class="hero-pills">
+        <div class="hero-pill"><div class="pval" id="p-fat">—</div><div class="plbl">Faturamento atual</div></div>
+        <div class="hero-pill"><div class="pval" id="p-ticket">—</div><div class="plbl">Ticket médio</div></div>
+        <div class="hero-pill"><div class="pval" id="p-clientes">—</div><div class="plbl">Clientes ativos</div></div>
+        <div class="hero-pill"><div class="pval" id="p-score">—</div><div class="plbl">Score CAC Zero</div></div>
+      </div>
+    </div>
+
+    <div class="plano-body">
+
+      <!-- 01 DIAGNÓSTICO -->
+      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">01 · Diagnóstico</span><div class="sec-sep-line"></div></div>
+      <div class="sec-title">O que o diagnóstico revelou</div>
+
+      <div class="score-section">
+        <div class="score-flex">
+          <div class="score-num" id="p-score-big">—<span>/99</span></div>
+          <div class="score-insight" id="p-score-insight">—</div>
+        </div>
+        <div class="score-bars" id="p-score-bars">
+          <!-- preenchido via JS -->
+        </div>
+      </div>
+
+      <div class="diag-grid" id="p-diag-grid">
+        <!-- preenchido via JS -->
+      </div>
+
+      <!-- 02 GARGALOS -->
+      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">02 · Gargalos</span><div class="sec-sep-line"></div></div>
+      <div class="sec-title" id="p-gargalo-titulo">O que está travando seu crescimento</div>
+      <div id="p-gargalos">
+        <!-- preenchido via JS -->
+      </div>
+
+      <!-- 03 PLANO 90 DIAS -->
+      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">03 · Plano de Ação</span><div class="sec-sep-line"></div></div>
+      <div class="sec-title">90 dias para chegar na sua meta</div>
+      <div id="p-fases">
+        <!-- preenchido via JS -->
+      </div>
+
+      <!-- 04 CANAIS -->
+      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">04 · Canais de Prospecção</span><div class="sec-sep-line"></div></div>
+      <div class="sec-title">Canais recomendados para seu perfil</div>
+      <div class="channels-grid" id="p-canais">
+        <!-- preenchido via JS -->
+      </div>
+
+      <!-- 05 MATEMÁTICA DA META -->
+      <div class="sec-sep"><div class="sec-sep-line"></div><span class="sec-tag">05 · Matemática da Meta</span><div class="sec-sep-line"></div></div>
+      <div class="sec-title">Como sua meta se constrói</div>
+      <div class="score-section">
+        <table class="meta-table" id="p-math-table">
+          <!-- preenchido via JS -->
+        </table>
+      </div>
+
+      <!-- CTA FINAL -->
+      <div class="cta-block">
+        <h3>Próximo Passo: Sessão de Aceleração</h3>
+        <p id="p-cta-text">Este plano foi construído com base no seu diagnóstico. O próximo passo é colocar a máquina em movimento com o método completo.</p>
+        <button class="cta-btn" onclick="baixarPDF()">⬇ BAIXAR ESTE PLANO</button>
+      </div>
+
+    </div><!-- /plano-body -->
+
+    <div class="plano-footer">
+      <div class="plano-footer-logo">VITOR & <span>PEDRO</span> · New Money Club</div>
+      <div class="plano-footer-note" id="p-footer-date">—</div>
+    </div>
+
+  </div><!-- /plano-conteudo -->
+
+</div><!-- /plano-wrapper -->
 
 <script>
-// ========================
+// ============================================================
 // SUPABASE CONFIG
-// ========================
+// ============================================================
 const SB_URL = 'https://chxlseszedcnmqqryusz.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoeGxzZXN6ZWRjbm1xcXJ5dXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTcyMDcsImV4cCI6MjA5MDYzMzIwN30.WPAltPpCyLtgp8BulahVXU8z9rzlfezhZChc-0lu-6M';
 
-// ========================
-// ESTADO DOS TOGGLES
-// ========================
+// ============================================================
+// TOGGLE STATE
+// ============================================================
 const toggleState = {};
-
 function setToggle(field, val, btn) {
   toggleState[field] = val;
   const parent = btn.closest('.toggle-btns');
-  parent.querySelectorAll('.toggle-btn').forEach(b => {
-    b.classList.remove('active-sim','active-nao');
-  });
+  parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active-sim','active-nao'));
   btn.classList.add(val ? 'active-sim' : 'active-nao');
-
-  // condicionais
-  const map = {
-    ja_prospectou_ativamente: 'cond-prospeccao',
-    tem_vendedor: 'cond-vendedores',
-    usa_crm: 'cond-crm',
-    tem_meta_mensal: 'cond-meta'
-  };
-  if (map[field]) {
-    const el = document.getElementById(map[field]);
-    if (el) el.classList.toggle('show', val);
-  }
+  const map = { ja_prospectou_ativamente:'cond-prospeccao', tem_vendedor:'cond-vendedores', usa_crm:'cond-crm', tem_meta_mensal:'cond-meta' };
+  if (map[field]) { const el = document.getElementById(map[field]); if (el) el.classList.toggle('show', val); }
 }
 
-// ========================
+// ============================================================
 // PROGRESS
-// ========================
+// ============================================================
 function updateProgress() {
-  const fields = document.querySelectorAll('input[required], select[required=#]');
-  const radios = ['faturamento_atual','ticket_medio','canal_aquisicao','processo_prospeccao','maior_obstaculo'];
-  const textIds = ['nome_responsavel','whatsapp','segmento','principal_produto','principal_expectativa'];
-
+  const radios = ['faturamento_atual','canal_aquisicao','maior_obstaculo'];
+  const textIds = ['nome_responsavel','whatsapp','principal_produto','principal_expectativa'];
   let filled = 0, total = radios.length + textIds.length;
-
   radios.forEach(n => { if (document.querySelector(`input[name="${n}"]:checked`)) filled++; });
   textIds.forEach(id => { const el = document.getElementById(id); if (el && el.value.trim()) filled++; });
-
   const pct = Math.round((filled / total) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-pct').textContent = pct + '%';
-
-  const blocos = ['Identificação','Números Atuais','Captação de Clientes','Estrutura Comercial','Gargalos e Expectativas'];
-  const activeBloco = Math.min(Math.floor((filled / total) * 5), 4);
-  document.getElementById('progress-label').textContent = blocos[activeBloco];
+  const blocos = ['Identificação','Números Atuais','Captação de Clientes','Estrutura Comercial','Gargalos'];
+  document.getElementById('progress-label').textContent = blocos[Math.min(Math.floor((filled/total)*5), 4)];
 }
-
 document.querySelectorAll('input, select, textarea').forEach(el => {
   el.addEventListener('change', updateProgress);
   el.addEventListener('input', updateProgress);
 });
 
-// ========================
+// ============================================================
 // SCORE ENGINE
-// ========================
+// ============================================================
 function calcScore(d) {
-  let score = 0;
   const breakdown = {};
-
-  // Faturamento base
   const fatMap = {'Até R$10K/mês':10,'R$10K–R$30K/mês':20,'R$30K–R$80K/mês':28,'Acima de R$80K/mês':35};
   breakdown.faturamento = fatMap[d.faturamento_atual] || 15;
-
-  // Processo de prospecção (gap = oportunidade)
-  const procMap = {
-    'Não tenho processo — espero os clientes aparecerem': 20,
-    'Processo básico — sem cadência definida': 16,
-    'Processo definido mas inconsistente': 10,
-    'Processo estruturado — executo diariamente': 6
-  };
+  const procMap = { 'Não tenho processo — espero os clientes aparecerem':20, 'Processo básico — sem cadência definida':16, 'Processo definido mas inconsistente':10, 'Processo estruturado — executo diariamente':6 };
   breakdown.processo = procMap[d.processo_prospeccao] || 12;
-
-  // Dependência de indicação (quanto maior, mais urgente o método)
   const indMap = {'Menos de 20%':4,'20% a 40%':8,'40% a 60%':12,'60% a 80%':16,'Mais de 80% — quase tudo é indicação':18};
   breakdown.dependencia = indMap[d.dependencia_indicacao] || 8;
-
-  // Infra comercial
-  if (!d.tem_vendedor)    breakdown.infra = 8; else breakdown.infra = 3;
-  if (!d.usa_crm)         breakdown.infra = (breakdown.infra || 0) + 5;
-  if (!d.tem_script_venda) breakdown.infra = (breakdown.infra || 0) + 4;
-  if (!d.tem_meta_mensal)  breakdown.infra = (breakdown.infra || 0) + 3;
-  breakdown.infra = Math.min(breakdown.infra || 0, 18);
-
-  // Disponibilidade (comprometimento)
-  const dispMap = {
-    'Menos de 5h/semana': 2,
-    '5 a 10h/semana': 5,
-    '10 a 20h/semana': 8,
-    'Mais de 20h/semana — comprometido 100%': 12
-  };
+  let infra = 0;
+  if (!d.tem_vendedor) infra += 8; else infra += 3;
+  if (!d.usa_crm) infra += 5;
+  if (!d.tem_script_venda) infra += 4;
+  if (!d.tem_meta_mensal) infra += 3;
+  breakdown.infra = Math.min(infra, 18);
+  const dispMap = {'Menos de 5h/semana':2,'5 a 10h/semana':5,'10 a 20h/semana':8,'Mais de 20h/semana — comprometido 100%':12};
   breakdown.disponibilidade = dispMap[d.disponibilidade_implementacao] || 4;
-
-  score = Object.values(breakdown).reduce((a, b) => a + b, 0);
-  score = Math.min(score, 99);
-
-  let nivel = 'base';
-  if (score >= 70) nivel = 'avancado';
-  else if (score >= 45) nivel = 'intermediario';
-
+  let score = Math.min(Object.values(breakdown).reduce((a,b)=>a+b,0), 99);
+  const nivel = score >= 70 ? 'avancado' : score >= 45 ? 'intermediario' : 'base';
   return { score, breakdown, nivel };
 }
 
-function gerarResumo(d, score, nivel) {
+// ============================================================
+// GERAÇÃO DO PLANO
+// ============================================================
+function gerarPlano(d, score, breakdown, nivel) {
+  const hoje = new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+  const primeiroNome = d.nome_responsavel.split(' ')[0];
+  const metaTexto = d.meta_faturamento_90d || 'sua meta de faturamento';
+  const metaCurta = d.meta_faturamento_90d ? d.meta_faturamento_90d : 'sua meta';
+
+  // Header da barra de download
+  document.getElementById('dl-nome').textContent = d.nome_responsavel;
+  document.getElementById('dl-data').textContent = hoje;
+
+  // Hero
+  document.getElementById('p-tag').textContent = `Plano CAC Zero · ${d.segmento || 'Serviços B2B'} · 90 dias`;
+  document.getElementById('p-titulo').innerHTML = `De onde você está para <em>${metaCurta}</em> com estrutura e método.`;
+  document.getElementById('p-sub').textContent = `Diagnóstico completo + estratégia de prospecção ativa CAC Zero personalizada para ${primeiroNome} — ${d.segmento || 'seu negócio'}.`;
+  document.getElementById('p-fat').textContent = d.faturamento_atual ? d.faturamento_atual.replace('/mês','').replace('Acima de ','') : '—';
+  document.getElementById('p-ticket').textContent = d.ticket_medio ? d.ticket_medio.replace('Até ','<') : '—';
+  document.getElementById('p-clientes').textContent = d.num_clientes_ativos || '—';
+  document.getElementById('p-score').textContent = `${score}/99`;
+  document.getElementById('p-footer-date').textContent = `Plano gerado em ${hoje} · Diagnóstico: ${d.nome_responsavel}`;
+
+  // Score Big
+  document.getElementById('p-score-big').innerHTML = `${score}<span>/99</span>`;
   const nivelMap = {
-    base: 'Estrutura comercial inicial — alto potencial de avanço rápido com o método.',
-    intermediario: 'Base estruturada parcialmente — foco em cadência e conversão.',
-    avancado: 'Operação madura — foco em escala com CAC Zero e previsibilidade.'
+    base: `Estrutura comercial inicial — alto potencial de avanço rápido com o método CAC Zero. ${primeiroNome} tem os ingredientes certos, falta o processo.`,
+    intermediario: `Base estruturada parcialmente — foco em cadência e conversão. Com prospecção ativa consistente, ${primeiroNome} dobra o faturamento em 60 dias.`,
+    avancado: `Operação madura — foco em escala com CAC Zero e previsibilidade total. ${primeiroNome} está pronto para sistematizar e multiplicar.`
   };
+  document.getElementById('p-score-insight').textContent = nivelMap[nivel] + (d.disponibilidade_implementacao ? ` Disponibilidade declarada: ${d.disponibilidade_implementacao}.` : '');
 
+  // Score bars
+  const barLabels = ['Faturamento','Processo','Dependência','Infra Comercial','Disponib.'];
+  const barKeys = ['faturamento','processo','dependencia','infra','disponibilidade'];
+  const barMax = [35, 20, 18, 18, 12];
+  document.getElementById('p-score-bars').innerHTML = barKeys.map((k,i) => {
+    const v = breakdown[k] || 0;
+    const pct = Math.round((v/barMax[i])*100);
+    return `<div class="bar-item"><div class="bar-lbl">${barLabels[i]}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><div class="bar-val">${v}</div></div>`;
+  }).join('');
+
+  // Diag grid
+  const diagItems = [
+    { lbl: 'Nome', val: d.nome_responsavel, cls: '' },
+    { lbl: 'Segmento', val: d.segmento || '—', cls: '' },
+    { lbl: 'Produto principal', val: d.principal_produto || '—', cls: '' },
+    { lbl: 'Ticket médio', val: d.ticket_medio || '—', cls: 'warn' },
+    { lbl: 'Canal principal atual', val: d.canal_aquisicao || '—', cls: d.canal_aquisicao === 'Prospecção ativa (eu abordo)' ? 'ok' : 'warn' },
+    { lbl: 'Dependência de indicação', val: d.dependencia_indicacao || '—', cls: (d.dependencia_indicacao||'').includes('80%') ? 'danger' : 'warn' },
+    { lbl: 'Vendedor dedicado', val: d.tem_vendedor ? 'Sim' : 'Não — fundador vende', cls: d.tem_vendedor ? 'ok' : 'warn' },
+    { lbl: 'Script de venda', val: d.tem_script_venda ? 'Tem script' : 'Não tem — gargalo direto', cls: d.tem_script_venda ? 'ok' : 'danger' },
+    { lbl: 'CRM / controle', val: d.usa_crm ? (d.qual_crm||'Usa CRM') : 'Não usa — risco de perda', cls: d.usa_crm ? 'ok' : 'danger' },
+    { lbl: 'Maior obstáculo', val: d.maior_obstaculo || '—', cls: 'danger' },
+    { lbl: 'Onde perde mais vendas', val: d.onde_perde_venda || '—', cls: 'warn' },
+    { lbl: 'Taxa de conversão', val: d.taxa_conversao_estimada || '—', cls: '' },
+  ];
+  document.getElementById('p-diag-grid').innerHTML = diagItems.map(it =>
+    `<div class="diag-card"><div class="dlbl">${it.lbl}</div><div class="dval ${it.cls}">${it.val}</div></div>`
+  ).join('');
+
+  // Gargalos — dinâmico baseado nas respostas
+  const gargalos = [];
   const obstaculo = d.maior_obstaculo || '';
-  let foco = '';
-  if (obstaculo.includes('leads')) foco = 'Prioridade 1: Motor de prospecção ativa — 50 contatos/semana com ICP definido.';
-  else if (obstaculo.includes('fecham')) foco = 'Prioridade 1: Estruturação do script e funil de fechamento.';
-  else if (obstaculo.includes('tráfego')) foco = 'Prioridade 1: Construção de canal de aquisição CAC Zero independente de mídia.';
-  else if (obstaculo.includes('previsibilidade')) foco = 'Prioridade 1: KPIs semanais + cadência de prospecção com meta de 1 fechamento/semana.';
-  else foco = 'Prioridade 1: Diagnóstico operacional completo na primeira reunião.';
+  const perdaVenda = d.onde_perde_venda || '';
+  const canal = d.canal_aquisicao || '';
 
-  return `Score ${score}/99 — ${nivelMap[nivel]} ${foco} Disponibilidade: ${d.disponibilidade_implementacao || 'não informada'}.`;
+  if (!d.tem_script_venda) {
+    gargalos.push({ icon:'📝', title:'Sem script de venda definido', text:`${primeiroNome} aborda cada oportunidade no improviso. Sem um roteiro claro do primeiro contato ao fechamento, a taxa de conversão é instável e dependente do humor do dia.` });
+  }
+  if (obstaculo.includes('leads')) {
+    gargalos.push({ icon:'⚡', title:'Sem motor de prospecção ativa', text:`Toda geração de leads depende de canal passivo. Quando o fluxo seca, o faturamento para. Precisa de um processo diário de outreach com ICP definido — 50 contatos/semana é o mínimo.` });
+  }
+  if (obstaculo.includes('previsibilidade') || !d.tem_meta_mensal) {
+    gargalos.push({ icon:'📊', title:'Sem previsibilidade comercial', text:`Sem meta definida e KPIs acompanhados, cada mês é uma surpresa. O método CAC Zero estabelece cadência semanal: 50 contatos → reuniões → propostas → fechamentos. Número controlado.` });
+  }
+  if (perdaVenda.includes('agendamento') || perdaVenda.includes('abordagem')) {
+    gargalos.push({ icon:'📅', title:`Perda no ${perdaVenda.includes('agendamento') ? 'agendamento' : 'primeiro contato'}`, text:`O maior vazamento de negócios acontece antes da reunião. Falta sequência de follow-up estruturada. O lead some e não volta — não por desinteresse, mas por falta de cadência.` });
+  }
+  if (obstaculo.includes('tráfego') || canal.includes('Tráfego')) {
+    gargalos.push({ icon:'💸', title:'Dependência de tráfego pago', text:`Quando para de investir em anúncios, as vendas somem. O método CAC Zero constrói um canal de aquisição independente de mídia — prospecção ativa com custo zero de aquisição.` });
+  }
+  if (!d.usa_crm) {
+    gargalos.push({ icon:'🗂️', title:'Sem controle da pipeline', text:`Sem CRM, oportunidades se perdem no WhatsApp. Não é possível saber quantos leads estão em cada etapa, qual a taxa real de conversão ou onde o funil está vazando.` });
+  }
+  // Garantir pelo menos 3 gargalos
+  if (gargalos.length < 3) {
+    gargalos.push({ icon:'⏱️', title:'Crescimento dependente do fundador', text:`O fundador ainda é o principal responsável pela venda. Isso cria um teto de crescimento — não é possível escalar sem estruturar um processo replicável.` });
+  }
+
+  document.getElementById('p-gargalo-titulo').textContent = `O que está travando ${primeiroNome}`;
+  document.getElementById('p-gargalos').innerHTML = gargalos.slice(0,5).map(g =>
+    `<div class="gargalo"><div class="gargalo-icon">${g.icon}</div><div><div class="gargalo-title">${g.title}</div><div class="gargalo-text">${g.text}</div></div></div>`
+  ).join('');
+
+  // Plano 90 dias — personalizado por segmento e nível
+  const seg = d.segmento || 'Serviços B2B';
+  const icpMap = {
+    'Contabilidade / Tributário': 'empresários com faturamento acima de R$500K/ano que precisam de BPO fiscal ou planejamento tributário',
+    'Advocacia / Jurídico': 'empresas com faturamento acima de R$1M/ano com demanda jurídica recorrente (trabalhista, contratos, tributário)',
+    'Saúde / Clínicas': 'pacientes ou planos corporativos — convênios e empresas que precisam de saúde ocupacional ou atendimento recorrente',
+    'Educação / Treinamento': 'empresas com times que precisam de capacitação — RH e gestores de T&D com orçamento definido',
+    'Consultoria / Gestão': 'empresários de serviços e indústria com faturamento entre R$500K e R$5M/ano em busca de estruturação operacional',
+    'RH / Recrutamento': 'empresas em expansão com demanda recorrente de contratação ou gestão de benefícios',
+    'Tecnologia / SaaS': 'empresas B2B com operação digital que precisam de automação, integração ou desenvolvimento',
+    'Agência / Marketing': 'empresas com orçamento de comunicação acima de R$5K/mês que querem resultado mensurável',
+    'Serviços B2B': 'empresários de serviços com faturamento entre R$300K e R$3M/ano que querem crescer sem depender de tráfego',
+  };
+  const icp = icpMap[seg] || icpMap['Serviços B2B'];
+
+  const parceirosSeg = {
+    'Contabilidade / Tributário': 'advogados tributaristas, consultores de gestão e BPOs de RH',
+    'Advocacia / Jurídico': 'contadores, consultores financeiros e assessores de M&A',
+    'Saúde / Clínicas': 'RH de empresas, corretores de planos de saúde e gestores de benefícios',
+    'Educação / Treinamento': 'consultorias de gestão, RH corporativo e associações de classe',
+    'Consultoria / Gestão': 'contadores, bancos, investidores e advogados empresariais',
+    'default': 'contadores, advogados e consultores de gestão',
+  };
+  const parceiros = parceirosSeg[seg] || parceirosSeg['default'];
+
+  const fases = [
+    {
+      num:'01', name:'Estruturação — Casa Arrumada', period:'Dias 1 – 30', tag:'Fundação',
+      acoes: [
+        { dot:'A', title:'Definir ICP com precisão cirúrgica', desc:`Segmento-alvo: ${icp}. Mapear dor principal, cargo decisor, objeções e momento de compra. A prospecção ruim nasce de ICP indefinido — isso é o ponto zero.` },
+        { dot:'B', title:'Criar script de abordagem e diagnóstico', desc:`Script de WhatsApp frio, script para agendar reunião e roteiro de diagnóstico + fechamento. O vendedor (ou ${primeiroNome}) usa o roteiro — sem improvisar.` },
+        { dot:'C', title:`Estruturar controle de pipeline`, desc:`Colunas claras: Abordagem → Reunião Agendada → Em Proposta → Fechado. Atualização diária. Sem controle, não existe gestão comercial.` },
+        { dot:'D', title:'Mapeamento da base existente (Farmer)', desc:`Listar clientes ativos por ticket, ex-clientes dos últimos 2 anos e leads que não fecharam. Segmentar por oportunidade: upsell, reativação ou indicação ativa.` },
+      ]
+    },
+    {
+      num:'02', name:'Ativação — Motor Ligado', period:'Dias 31 – 60', tag:'Execução',
+      acoes: [
+        { dot:'A', title:'Prospecção ativa — 50 contatos/semana', desc:`Via LinkedIn + WhatsApp focado no ICP mapeado. Meta: 10 reuniões agendadas/semana com taxa de 20%. O volume é o que separa quem prospecta de quem tenta.` },
+        { dot:'B', title:'Executar Farmer — upsell e reativação', desc:`Semana 1-2: campanha de upsell para clientes no menor ticket. Semana 3-4: reativação de ex-clientes. Receita mais rápida com custo zero.` },
+        { dot:'C', title:'Ativar canal de parceiros', desc:`Formalizar parcerias com ${parceiros}. Cada parceiro ativo é um canal de leads qualificados com ICP natural e custo de aquisição zero.` },
+        { dot:'D', title:'LinkedIn como canal de atração', desc:`Conteúdo de autoridade voltado para o ICP — casos reais, erros comuns do segmento, diagnósticos públicos. Audiência com poder de compra e ciclo de venda mais curto.` },
+      ]
+    },
+    {
+      num:'03', name:'Aceleração — Escalar o que Funciona', period:'Dias 61 – 90', tag:'Escala',
+      acoes: [
+        { dot:'A', title:'Dobrar aposta no canal com melhor ROI', desc:`Identificar qual canal entregou mais reunião por esforço nos 30 dias anteriores. Concentrar 70% da energia ali. Parar o que não funciona sem culpa.` },
+        { dot:'B', title:'Criar oferta de entrada de menor fricção', desc:`Para quem hesita no ticket cheio: um diagnóstico pago (R$300–R$800) que converte naturalmente para o contrato mensal. Reduz o "preciso pensar" e antecipa receita.` },
+        { dot:'C', title:'Review semanal de pipeline com o método', desc:`Weekly de 30 minutos toda segunda: contatos, reuniões, propostas, fechamentos. Cadência que transforma prospecção em previsibilidade — nunca mais um mês surpresa.` },
+        { dot:'D', title:'Consolidar parceiros e programa de indicação', desc:`Comunicar formalmente para toda a base: regras simples, benefício claro. Cada indicação que fecha gera bônus para o indicador. Meta: 8 indicações/mês ativos.` },
+      ]
+    }
+  ];
+
+  document.getElementById('p-fases').innerHTML = fases.map(f => `
+    <div class="fase">
+      <div class="fase-header">
+        <div class="fase-num">${f.num}</div>
+        <div><div class="fase-name">${f.name}</div><div class="fase-period">${f.period}</div></div>
+        <div class="fase-tag">${f.tag}</div>
+      </div>
+      <div class="fase-body">
+        <ul class="action-list">
+          ${f.acoes.map(a=>`<li class="action-item"><div class="action-dot">${a.dot}</div><div><div class="action-title">${a.title}</div><div class="action-desc">${a.desc}</div></div></li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `).join('');
+
+  // Canais — priorizados pelo perfil
+  const canaisBase = [
+    { p:'p1', priority:'Prioridade Alta', name:'WhatsApp Outreach', desc:`Abordagem direta com script personalizado para o ICP de ${seg}. Canal mais rápido para agendar reunião no Brasil. 50 contatos/semana mínimo.` },
+    { p:'p1', priority:'Prioridade Alta', name:'Base Existente (Farmer)', desc:`Upsell, reativação e indicação da base atual de clientes + ex-clientes. Canal de maior conversão e menor custo de aquisição — zero investimento.` },
+    { p:'p1', priority:'Prioridade Alta', name:'Parcerias Ativas', desc:`${parceiros.charAt(0).toUpperCase() + parceiros.slice(1)} como fonte de leads qualificados. Formalizar com SLA e comunicação regular.` },
+    { p:'p2', priority:'Prioridade Média', name:'LinkedIn', desc:`Conteúdo de autoridade + prospecção direta com o decisor certo. Audiência com poder decisório e ciclo de compra mais rápido.` },
+    { p:'p2', priority:'Prioridade Média', name:'Indicação Estruturada', desc:`Programa formal com benefício claro. Pedir indicação no momento certo — logo após uma vitória do cliente. Meta: 8 indicações/mês.` },
+    { p:'p3', priority:'Complementar', name:'Eventos e Palestras', desc:`Para ${seg}: presença em associações do setor gera leads quentes com confiança prévia. ROI alto por relacionamento.` },
+  ];
+  document.getElementById('p-canais').innerHTML = canaisBase.map(c =>
+    `<div class="channel-card ${c.p}"><div class="ch-priority">${c.priority}</div><div class="ch-name">${c.name}</div><div class="ch-desc">${c.desc}</div></div>`
+  ).join('');
+
+  // Matemática da meta — baseada no ticket declarado
+  const ticketNum = { 'Até R$1.500':1500, 'R$1.500–R$5.000':3000, 'R$5.000–R$15.000':8000, 'Acima de R$15.000':15000 };
+  const ticket = ticketNum[d.ticket_medio] || 3000;
+  const ticketFmt = ticket >= 1000 ? `R$${(ticket/1000).toFixed(0)}K` : `R$${ticket}`;
+  const upsell = Math.round(ticket * 0.8);
+  const upsellFmt = `R$${Math.round(upsell/1000)}K`;
+
+  document.getElementById('p-math-table').innerHTML = `
+    <thead><tr>
+      <th>Origem</th><th>Ação</th><th>Resultado esperado</th><th>Receita estimada</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Base atual — Upsell</td>
+        <td>8 clientes no menor ticket migram para pacote superior</td>
+        <td>+${upsellFmt}/mês por cliente</td>
+        <td><span class="badge badge-gold">+${(upsell*8/1000).toFixed(0)}K/mês</span></td>
+      </tr>
+      <tr>
+        <td>Reativação ex-clientes</td>
+        <td>4 ex-clientes reativados (ticket médio ${ticketFmt})</td>
+        <td>4 novos contratos mensais</td>
+        <td><span class="badge badge-gold">+${(ticket*4/1000).toFixed(0)}K/mês</span></td>
+      </tr>
+      <tr>
+        <td>Indicação ativa</td>
+        <td>8 indicações → 3 fechamentos (37% conv.)</td>
+        <td>3 novos contratos ${ticketFmt}</td>
+        <td><span class="badge badge-green">+${(ticket*3/1000).toFixed(0)}K/mês</span></td>
+      </tr>
+      <tr>
+        <td>Prospecção ativa outbound</td>
+        <td>50 contatos/sem → 10 reuniões → 3 fechamentos/sem</td>
+        <td>12 contratos/mês × ${ticketFmt}</td>
+        <td><span class="badge badge-green">+${(ticket*12/1000).toFixed(0)}K/mês</span></td>
+      </tr>
+      <tr>
+        <td colspan="3" style="font-weight:700;color:#F2EEE4;text-align:right;padding-top:20px;">Total Recorrência Potencial (90 dias)</td>
+        <td style="padding-top:20px;"><span class="badge badge-gold" style="font-size:13px;padding:5px 14px;">${((upsell*8 + ticket*4 + ticket*3 + ticket*12)/1000).toFixed(0)}K/mês</span></td>
+      </tr>
+    </tbody>
+  `;
+
+  // CTA text
+  document.getElementById('p-cta-text').textContent = `Este plano foi construído com base no diagnóstico de ${primeiroNome}. O próximo passo é uma sessão de aceleração para colocar o motor em movimento — com o método completo de Vitor & Pedro.`;
 }
 
-// ========================
+// ============================================================
+// DOWNLOAD PDF
+// ============================================================
+function baixarPDF() {
+  const btn = document.getElementById('btn-baixar');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>GERANDO PDF...';
+  const nome = document.getElementById('dl-nome').textContent.replace(/\s+/g,'_');
+  const opt = {
+    margin: 0,
+    filename: `Plano_CAC_Zero_${nome}.pdf`,
+    image: { type:'jpeg', quality:0.97 },
+    html2canvas: { scale:2, useCORS:true, backgroundColor:'#080808', logging:false },
+    jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
+    pagebreak: { mode:['avoid-all','css','legacy'] }
+  };
+  html2pdf().set(opt).from(document.getElementById('plano-conteudo')).save().then(() => {
+    btn.disabled = false;
+    btn.innerHTML = '⬇ BAIXAR PLANO PDF';
+  }).catch(() => {
+    btn.disabled = false;
+    btn.innerHTML = '⬇ BAIXAR PLANO PDF';
+  });
+}
+
+// ============================================================
 // SUBMIT
-// ========================
+// ============================================================
 document.getElementById('diag-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-
   const btn = document.getElementById('btn-submit');
   const errEl = document.getElementById('error-msg');
   errEl.style.display = 'none';
 
-  // Coleta
   const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
   const radio = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
 
-  // Validação mínima
-  if (!get('nome_responsavel') || !get('whatsapp') || !radio('faturamento_atual') || !radio('maior_obstaculo') || !get('principal_expectativa')) {
+  if (!get('nome_responsavel') || !get('whatsapp') || !radio('faturamento_atual') || !radio('maior_obstaculo') || !get('principal_expectativa') || !get('principal_produto')) {
     errEl.textContent = 'Por favor, preencha os campos obrigatórios marcados com *.';
     errEl.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1041,50 +1231,51 @@ document.getElementById('diag-form').addEventListener('submit', async (e) => {
   }
 
   const payload = {
-    nome_responsavel: get('nome_responsavel'),
-    cargo_responsavel: get('cargo_responsavel'),
-    whatsapp: get('whatsapp'),
-    segmento: get('segmento'),
-    principal_produto: get('principal_produto'),
-    diferencial_percebido: get('diferencial_percebido'),
-    faturamento_atual: radio('faturamento_atual'),
-    ticket_medio: radio('ticket_medio'),
-    num_clientes_ativos: get('num_clientes_ativos'),
-    ciclo_venda: get('ciclo_venda'),
-    canal_aquisicao: radio('canal_aquisicao'),
-    dependencia_indicacao: get('dependencia_indicacao'),
+    nome_responsavel:       get('nome_responsavel'),
+    cargo_responsavel:      get('cargo_responsavel'),
+    whatsapp:               get('whatsapp'),
+    segmento:               get('segmento'),
+    principal_produto:      get('principal_produto'),
+    diferencial_percebido:  get('diferencial_percebido'),
+    faturamento_atual:      radio('faturamento_atual'),
+    ticket_medio:           radio('ticket_medio'),
+    num_clientes_ativos:    get('num_clientes_ativos'),
+    ciclo_venda:            get('ciclo_venda'),
+    canal_aquisicao:        radio('canal_aquisicao'),
+    dependencia_indicacao:  get('dependencia_indicacao'),
     ja_prospectou_ativamente: toggleState.ja_prospectou_ativamente ?? null,
     experiencia_prospeccao: get('experiencia_prospeccao'),
-    tem_vendedor: toggleState.tem_vendedor ?? null,
-    num_vendedores: get('num_vendedores'),
-    usa_crm: toggleState.usa_crm ?? null,
-    qual_crm: get('qual_crm'),
-    tem_script_venda: toggleState.tem_script_venda ?? null,
-    tem_meta_mensal: toggleState.tem_meta_mensal ?? null,
-    meta_mensal_valor: get('meta_mensal_valor'),
-    processo_prospeccao: radio('processo_prospeccao'),
-    taxa_conversao_estimada: get('taxa_conversao_estimada'),
-    maior_obstaculo: radio('maior_obstaculo'),
-    onde_perde_venda: radio('onde_perde_venda'),
-    meta_faturamento_90d: get('meta_faturamento_90d'),
-    principal_expectativa: get('principal_expectativa'),
+    tem_vendedor:           toggleState.tem_vendedor ?? null,
+    num_vendedores:         get('num_vendedores'),
+    usa_crm:                toggleState.usa_crm ?? null,
+    qual_crm:               get('qual_crm'),
+    tem_script_venda:       toggleState.tem_script_venda ?? null,
+    tem_meta_mensal:        toggleState.tem_meta_mensal ?? null,
+    meta_mensal_valor:      get('meta_mensal_valor'),
+    processo_prospeccao:    radio('processo_prospeccao'),
+    taxa_conversao_estimada:get('taxa_conversao_estimada'),
+    maior_obstaculo:        radio('maior_obstaculo'),
+    onde_perde_venda:       radio('onde_perde_venda'),
+    meta_faturamento_90d:   get('meta_faturamento_90d'),
+    principal_expectativa:  get('principal_expectativa'),
     disponibilidade_implementacao: radio('disponibilidade_implementacao'),
+    origem: 'new_money_club',
+    empresa_id: '11111111-1111-1111-1111-111111111111',
   };
 
-  // Score
+  // Calcular score
   const { score, breakdown, nivel } = calcScore(payload);
   payload.score = score;
-  payload.score_breakdown = breakdown;
+  payload.score_breakdown = JSON.stringify(breakdown);
   payload.nivel = nivel;
-  payload.diagnostico_resumo = gerarResumo(payload, score, nivel);
-  payload.empresa_id = '11111111-1111-1111-1111-111111111111';
+  payload.diagnostico_resumo = `Score ${score}/99 — ${nivel}. Maior obstáculo: ${payload.maior_obstaculo}. Origem: New Money Club.`;
 
-  // Loading
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>ENVIANDO...';
+  btn.innerHTML = '<span class="spinner"></span>GERANDO PLANO...';
 
+  // Salvar no Supabase
   try {
-    const res = await fetch(`${SB_URL}/rest/v1/diagnosticos_clientes`, {
+    await fetch(`${SB_URL}/rest/v1/diagnosticos_clientes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1094,24 +1285,18 @@ document.getElementById('diag-form').addEventListener('submit', async (e) => {
       },
       body: JSON.stringify(payload)
     });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || 'Erro ao salvar');
-    }
-
-    // Sucesso
-    document.getElementById('form-wrapper').style.display = 'none';
-    const obrigado = document.getElementById('obrigado');
-    obrigado.style.display = 'flex';
-
-  } catch (err) {
-    btn.disabled = false;
-    btn.innerHTML = 'ENVIAR DIAGNÓSTICO →';
-    errEl.textContent = 'Erro ao enviar. Tente novamente em instantes.';
-    errEl.style.display = 'block';
-    console.error(err);
+  } catch(err) {
+    console.warn('Supabase: erro ao salvar (não bloqueia plano)', err);
   }
+
+  // Gerar plano independente do Supabase
+  document.getElementById('form-wrapper').style.display = 'none';
+  document.getElementById('plano-wrapper').style.display = 'block';
+  gerarPlano(payload, score, breakdown, nivel);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  btn.disabled = false;
+  btn.innerHTML = 'GERAR MEU PLANO DE AÇÃO →';
 });
 </script>
 </body>
